@@ -1,43 +1,58 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins&family=Roboto&display=swap');
 body {
     margin: 0px;
-    border: thin solid burlywood;
+    border: thin solid black;
 }
 
 div {
-    margin: 0px;
+    width: 1000px;
+    margin: 0px auto;
+}
+
+.header {
+    text-align: center;
     border: thin solid red;
 }
 
-div.page {
-    margin: 0px auto;
-    width: 1000px;
-    border: thin solid blueviolet;
-}
-
-div.header {
-    min-height: 100px;
-    max-height: 100px;
-    margin: 0px;
-    text-align: center;
+.indexes {
+    border: thin solid purple;
+    height: 75px;
 }
 
 table {
-    min-height: 50px;
+    height: inherit;
     width: 100%;
-    border: medium solid greenyellow;
+    padding: 0px;
+    border: thin solid olive;
+    margin: 0px;
 }
 
 td {
-    border: thin solid orange;
+    height: inherit;
+    border: thin solid deeppink;
+    padding-top: 5px;
 }
 
-p {
-    border: thin solid purple;
+.name {
+    margin: 0px;
     text-align: center;
+    border: thin solid chartreuse;
+    font-size: larger;
+    font-weight: bold;
+    font-family: 'Poppins', sans-serif;
 }
 
 span {
-    border: thin solid lightsalmon;
+    font-size: large;
+    margin: 5px;
+    font-family: 'Roboto', sans-serif;
+}
+
+.vol {
+    margin-right: 0px;
+    padding-right: 10px;
+    border-right: medium solid red;
+    float: left;
 }
 
 .value {
