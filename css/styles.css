@@ -30,10 +30,12 @@ table {
 td {
     border: thin solid orange;
 }
+
 p {
     border: thin solid purple;
     text-align: center;
 }
+
 span {
     border: thin solid lightsalmon;
 }
