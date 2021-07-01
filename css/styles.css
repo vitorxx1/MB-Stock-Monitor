@@ -15,18 +15,29 @@ div.page {
 }
 
 div.header {
-    max-height: 200px;
-    min-height: 200px;
+    min-height: 100px;
+    max-height: 100px;
     margin: 0px;
     text-align: center;
 }
 
 table {
-    min-height: 100px;
+    min-height: 50px;
     width: 100%;
     border: medium solid greenyellow;
 }
 
 td {
     border: thin solid orange;
+}
+p {
+    border: thin solid purple;
+    text-align: center;
+}
+span {
+    border: thin solid lightsalmon;
+}
+
+.value {
+    float: right;
 }
