@@ -1,0 +1,10 @@
+body {
+    margin-top: 0px;
+    border: thin solid burlywood;
+}
+
+div.page {
+    margin: 0px auto;
+    width: 1000px;
+    border: thin solid blueviolet;
+}
