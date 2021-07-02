@@ -11,40 +11,68 @@
 <body>
     <div class="page">
         <div class="header">
-            <p>MB Stock Monitor</p>
+            <p id="title">MB Stock Monitor</p>
         </div> <!-- Header -->
         <div class="indexes">
-            <table>
+            <table id="contIndex">
                 <tr>
-                    <td>
+                    <td class="index">
                         <p class="name">Name</p>
-                        <span class="vol">4321.4244 </span><span class="value">+123.44%</span>
+                        <span class="vol">R$13,45 </span><span class="value">+123.44%</span>
                     </td>
-                    <td>
+                    <td class="index">
                         <p class="name">Name</p>
-                        <span class="vol">4321.4244</span><span class="value">+123.44%</span>
+                        <span class="vol">R$13,45</span><span class="value">+123.44%</span>
                     </td>
-                    <td>
+                    <td class="index">
                         <p class="name">Name</p>
-                        <span class="vol">4321.4244</span><span class="value">+123.44%</span>
+                        <span class="vol">R$13,45</span><span class="value">+123.44%</span>
                     </td>
-                    <td>
+                    <td class="index">
                         <p class="name">Name</p>
-                        <span class="vol">4321.4244</span><span class="value">+123.44%</span>
+                        <span class="vol">R$13,45</span><span class="value">+123.44%</span>
                     </td>
-                    <td>
+                    <td class="index" id="last">
                         <p class="name">Name</p>
-                        <span class="vol">4321.4244</span><span class="value">+123.44%</span>
+                        <span class="vol">R$13,45</span><span class="value">+123.44%</span>
                     </td>
                 </tr>
             </table>
         </div> <!-- Indexes -->
-        <div class="charts">
-            <div id="first">
+        <div class="content">
+            <div id="leftChart">
+                <form>
+                    <select name="acao" id="acronym">
+                        <option value="1">LG</option>
+                        <option value="2">LG</option>
+                        <option value="3">LG</option>
+                        <option value="4">LG</option>
+                        <option value="5">LG</option>
+                        <option value="6">LG</option>
+                    </select>
+                </form>
+                <p id="actionName">Nome da ação</p>
+                <div class="chart" id="actions">
 
+                </div>
+                <div id="info">
+                    <table>
+                        <tr>
+                            <td>1</td>
+                            <td>2</td>
+                            <td>3</td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>5</td>
+                            <td>6</td>
+                        </tr>
+                    </table>
+                </div>
             </div> <!-- First -->
-            <div id="second">
-
+            <div id="rightChart">
+                <p>Indice bovespa</p>
+                <div class="chart" id="chartIndex"></div>
             </div> <!-- Second -->
         </div> <!-- Charts-->
     </div> <!-- Page -->

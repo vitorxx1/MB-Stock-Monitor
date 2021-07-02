@@ -1,60 +1,112 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins&family=Roboto&display=swap');
+
 body {
     margin: 0px;
-    border: thin solid black;
 }
 
 div {
+    padding: 0px;
     width: 1000px;
     margin: 0px auto;
 }
 
 .header {
+    border: thin solid rgb(41, 41, 41);
+    background-color: rgb(41, 41, 41);
+    color: black;
     text-align: center;
-    border: thin solid red;
 }
 
 .indexes {
-    border: thin solid purple;
-    height: 75px;
+    height: 70px;
+    padding: 0px;
 }
 
-table {
+#contIndex {
+    background-color: #e7e7e7;
     height: inherit;
-    width: 100%;
+    width: inherit;
+    border: thin solid rgb(41, 41, 41);
     padding: 0px;
-    border: thin solid olive;
     margin: 0px;
 }
 
-td {
+.index {
+    width: 200px;
+    padding-left: 5px;
+    padding-right:5px;
+    border-right: thin solid rgb(41, 41, 41);
     height: inherit;
-    border: thin solid deeppink;
-    padding-top: 5px;
+}
+
+#last {
+   border-right: 0px;
 }
 
 .name {
     margin: 0px;
     text-align: center;
-    border: thin solid chartreuse;
-    font-size: larger;
+    font-size: medium;
     font-weight: bold;
     font-family: 'Poppins', sans-serif;
 }
 
 span {
-    font-size: large;
-    margin: 5px;
+    width: 90px;
+    float: left;
+    margin-top: 5px;
+    font-size: medium;
     font-family: 'Roboto', sans-serif;
 }
 
-.vol {
-    margin-right: 0px;
-    padding-right: 10px;
-    border-right: medium solid red;
+.value {
+    padding: 0px;
+    text-align: left;
+    float: right;
+}
+
+#leftChart, #rightChart {
+    text-align: center;
+    margin: 0px;
+    padding: 10px 10px;
+    border: thin solid red;
     float: left;
 }
 
-.value {
+#leftChart {
+    width: 580px;
+}
+
+#rightChart {
     float: right;
+    width: 370px;
+}
+
+form {
+    margin-left: 10px;
+    float: left;
+    border: thin solid blueviolet;
+    display: inline;
+}
+
+#acronym {
+    width: 60px;
+    height: 30px;
+}
+
+#actionName {
+    text-align: center;
+    font-size: medium;
+    font-weight: bold;
+    font-family: 'Poppins', sans-serif;
+    margin: 15px;
+    border: thin solid blue;
+    display: inline;
+}
+
+.chart {
+    margin: 10px;
+    border:thin solid rgb(60, 255, 0);
+    width: 100%;
+    height: 550px;
 }
