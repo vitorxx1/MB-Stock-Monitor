@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/styles.css" type="text/css">
+    <script src="js/script.js"></script>
+</head>
+<body>
+    <div class="page">
+        <div class="header">
+            <p id="title">MB Stock Monitor</p>
+        </div> <!-- Header -->
+        <div class="indexes">
+            <table id="contIndex">
+                <tr>
+                    <td class="index">
+                        <p class="name">Name</p>
+                        <span class="vol">R$13,45 </span><span class="value">+123.44%</span>
+                    </td>
+                    <td class="index">
+                        <p class="name">Name</p>
+                        <span class="vol">R$13,45</span><span class="value">+123.44%</span>
+                    </td>
+                    <td class="index">
+                        <p class="name">Name</p>
+                        <span class="vol">R$13,45</span><span class="value">+123.44%</span>
+                    </td>
+                    <td class="index">
+                        <p class="name">Name</p>
+                        <span class="vol">R$13,45</span><span class="value">+123.44%</span>
+                    </td>
+                    <td class="index" id="last">
+                        <p class="name">Name</p>
+                        <span class="vol">R$13,45</span><span class="value">+123.44%</span>
+                    </td>
+                </tr>
+            </table>
+        </div> <!-- Indexes -->
+        <div class="content">
+            <div id="leftChart">
+                <form>
+                    <select name="acao" id="acronym">
+                        <option value="1">LG</option>
+                        <option value="2">LG</option>
+                        <option value="3">LG</option>
+                        <option value="4">LG</option>
+                        <option value="5">LG</option>
+                        <option value="6">LG</option>
+                    </select>
+                </form>
+                <p id="actionName">Nome da ação</p>
+                <div class="chart" id="actions">
+
+                </div>
+                <div id="info">
+                    <table>
+                        <tr>
+                            <td>1</td>
+                            <td>2</td>
+                            <td>3</td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>5</td>
+                            <td>6</td>
+                        </tr>
+                    </table>
+                </div>
+            </div> <!-- First -->
+            <div id="rightChart">
+                <p>Indice bovespa</p>
+                <div class="chart" id="chartIndex"></div>
+            </div> <!-- Second -->
+        </div> <!-- Charts-->
+    </div> <!-- Page -->
+</body>
+</html>
