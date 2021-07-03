@@ -4,109 +4,101 @@ body {
     margin: 0px;
 }
 
-div {
-    padding: 0px;
-    width: 1000px;
+div.page {
     margin: 0px auto;
+    width: 1000px;
 }
 
-.header {
-    border: thin solid rgb(41, 41, 41);
-    background-color: rgb(41, 41, 41);
-    color: black;
+#mainHeader {
+    border: thin solid rgba(144, 144, 144, 0.904);
+    font-weight: bold;
+    font-family: 'Roboto', sans-serif;
     text-align: center;
+    height: 100px;
 }
 
-.indexes {
-    height: 70px;
-    padding: 0px;
+#mainHeader h1 {
+    margin: 25px auto;
 }
 
-#contIndex {
-    background-color: #e7e7e7;
-    height: inherit;
-    width: inherit;
-    border: thin solid rgb(41, 41, 41);
-    padding: 0px;
+section#indexes {
+    margin: inherit;
+}
+
+ul {
+    text-align: center;
+    padding: 0;
     margin: 0px;
+    height: 70px;
+    border: thin solid rgba(144, 144, 144, 0.904);
 }
 
-.index {
-    width: 200px;
-    padding-left: 5px;
-    padding-right:5px;
-    border-right: thin solid rgb(41, 41, 41);
-    height: inherit;
+li{
+    list-style-type: none;
+    padding: 10px 5px;
+    font-family: 'Roboto', sans-serif;
+    height: 50px;
+    margin: 0px;
+    width: 18%;
+    border-right: 1px solid rgba(144, 144, 144, 0.904);
+    display: inline-block;
 }
 
 #last {
-   border-right: 0px;
+    border: none;
 }
 
-.name {
+.indexName {
     margin: 0px;
     text-align: center;
-    font-size: medium;
-    font-weight: bold;
-    font-family: 'Poppins', sans-serif;
 }
 
-span {
-    width: 90px;
-    float: left;
-    margin-top: 5px;
-    font-size: medium;
-    font-family: 'Roboto', sans-serif;
+.values {
+    margin: 0px;
+    padding: 10px 0px;
 }
 
-.value {
-    padding: 0px;
+.price {
+    padding: 0px 10px 0px 5px;
+    border-right: 1px solid rgba(144, 144, 144, 0.904);
     text-align: left;
-    float: right;
-}
-
-#leftChart, #rightChart {
-    text-align: center;
-    margin: 0px;
-    padding: 10px 10px;
-    border: thin solid red;
     float: left;
 }
 
-#leftChart {
-    width: 580px;
+.val {
+    text-align: right;
+    float: right;
 }
 
-#rightChart {
-    float: right;
-    width: 370px;
+#content{
+    height: 500px;
+    width: 650px;
+    border: thin solid rgba(144, 144, 144, 0.904);
+    float: left;
+}
+
+hgroup {
+    float: left;
+    border: thin solid rgba(144, 144, 144, 0.904);
 }
 
 form {
-    margin-left: 10px;
-    float: left;
-    border: thin solid blueviolet;
-    display: inline;
+    float: right;
 }
 
-#acronym {
-    width: 60px;
-    height: 30px;
-}
-
-#actionName {
-    text-align: center;
-    font-size: medium;
-    font-weight: bold;
-    font-family: 'Poppins', sans-serif;
-    margin: 15px;
-    border: thin solid blue;
-    display: inline;
+aside {
+    height: 500px;
+    border: thin solid rgba(144, 144, 144, 0.904);
 }
 
 .chart {
-    margin: 10px;
-    border:thin solid rgb(60, 255, 0);
-    width: 100%;
-    height: 550px;
+    clear: both;
+    border: thin solid rgba(144, 144, 144, 0.904);
+    margin: 0px 10px;
+    height: 100px;
+    width: 300px;
+}
+
+#one {
+    width: 95%;
 }
