@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/styles.css" type="text/css">
+    <script src="js/script.js"></script>
+</head>
+<body>
+    <div class="page">
+        <header id="mainHeader">
+            <h1>MB Stock Monitor</h1>
+        </header> <!-- Main header -->
+        <section id="indexes">
+            <ul>
+                <li>
+                    <h3 class="indexName" id="nameOne">Name</h3>
+                    <div class="values">
+                        <span class="price">R$41324.54</span><span class="var">123.45%</span>
+                    </div>
+                </li>
+                <li>
+                    <h3 class="indexName" id="nameTwo">Name</h3>
+                    <div class="values">
+                        <span class="price">R$41324.54</span><span class="var">123.45%</span>
+                    </div>
+                </li>
+                <li>
+                    <h3 class="indexName" id="nameThree">Name</h3>
+                    <div class="values">
+                        <span class="price">R$41324.54</span><span class="var">123.45%</span>
+                    </div>
+                </li>
+                <li>
+                    <h3 class="indexName" id="nameFour">Name</h3>
+                    <div class="values">
+                        <span class="price">R$41324.54</span><span class="var">123.45%</span>
+                    </div>
+                </li>
+                <li id="last">
+                    <h3 class="indexName" id="nameFive">Name</h3>
+                    <div class="values">
+                        <span class="price">R$41324.54</span><span class="var">123.45%</span>
+                    </div>
+                </li>
+            </ul>
+        </section> <!-- Indexes -->
+        <section id="content">
+            <header id="contentHeader">
+                <hgroup>
+                    <h1 id="actionName">Nome da ação</h1>
+                    <h2 id="actionValue">Valor</h2>
+                </hgroup>
+                <form>
+                    <select name="action" id="selection">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+                </form>
+            </header>
+            <canvas class="chart" id="one"></canvas>
+            <footer>
+                <table id="tableOne">
+                    <tr class="rowsOne">
+                        <td>One</td>
+                        <td>One</td>
+                        <td>One</td>
+                        <td>One</td>
+                        <td>One</td>
+                        <td>One</td>
+                    </tr>
+                    <tr class="rowsOne">
+                        <td>two</td>
+                        <td>two</td>
+                        <td>two</td>
+                        <td>two</td>
+                        <td>two</td>
+                        <td>two</td>
+                    </tr>
+                    <tr class="rowsOne">
+                        <td>three</td>
+                        <td>three</td>
+                        <td>three</td>
+                        <td>three</td>
+                        <td>three</td>
+                        <td>three</td>
+                    </tr>
+                </table>
+            </footer>
+        </section> <!-- Principal chart -->
+        <aside>
+            <header id="asideHeader">
+                <hgroup>
+                    <h1>Nome da ação</h1>
+                    <h2>Valor</h2>
+                </hgroup>
+            </header>
+            <canvas class="chart" id="two"></canvas>
+            <footer>
+                <table id="tableTwo">
+                    <tr class="rowsTwo">
+                        <td>one</td>
+                        <td>one</td>
+                    </tr>
+                    <tr class="rowsTwo">
+                        <td>two</td>
+                        <td>two</td>
+                    </tr>
+                    <tr class="rowsTwo">
+                        <td>three</td>
+                        <td>three</td>
+                    </tr>
+                </table>
+            </footer>
+        </aside> <!-- Second chart -->
+    </div> <!-- Page -->
+</body>
+</html>
