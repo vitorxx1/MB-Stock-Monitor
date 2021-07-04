@@ -14,7 +14,7 @@
 // });
 
 const { exec } = require('child_process');
-exec('python3 arq_py.py', (error, stdout, stderr) => {
+exec('python3 arq_py.py "vini" "baggio" ', (error, stdout, stderr) => {
   if (error) {
     console.error(`exec error: ${error}`);
     return;
