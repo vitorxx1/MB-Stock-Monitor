@@ -1,6 +1,80 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins&family=Roboto&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins&family=Roboto&family=Sigmar+One&display=swap');
 
 body {
+    padding: 0px;
+    margin: 0px;
+}
+
+div.page {
+    margin: 0px auto;
+    padding: inherit;
+    border: thin solid red;
+    font-family: 'Roboto', sans-serif;
+    width: 1000px;
+}
+
+#mainHeader {
+    border-bottom: thin solid red;
+    height: 100px;
+    padding: 0px;
+    text-align: center;
+}
+
+#mainHeader h1 {
+    margin: 20px 0px;
+    font-family: 'Sigmar One', cursive;
+    font-size: 40px;
+    word-spacing: 0.5em;
+    letter-spacing: 0.1em;
+}
+
+#indexes {
+    border-bottom: thin solid red;
+}
+
+ul {
+    display: flex;
+    justify-content: space-evenly;
+    padding: 0px;
+    margin: 0px;
+}
+
+li {
+    border-right: 1px solid #dadada;
+    padding: 0px 10px 2px;
+    list-style: none;
+    width: 170px;
+}
+
+li#last {
+    border: none;
+}
+
+li h4 {
+    font-size: 17px;
+    max-height: 17px;
+    overflow: hidden;
+    margin: 5px 0px;
+    text-align: center;
+}
+
+li div {
+    display: flex;
+    justify-content: center;
+}
+
+span {
+    padding: 0px 7px 0px 0px;
+    margin: 0px 7px 0px 0px;
+}
+
+span.price {
+    border-right: 1px solid #dadada;
+}
+
+
+
+/*body {
     margin: 0px;
 }
 
@@ -101,4 +175,4 @@ aside {
 
 #one {
     width: 95%;
-}
+} */
