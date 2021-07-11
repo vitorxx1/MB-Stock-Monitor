@@ -132,10 +132,9 @@ button:active {
     border-bottom: 2px solid rgb(0, 107, 194);;
 }
 
-canvas#one {
-    max-width: 95%;
-    min-height: 359px;
-    border: thin solid purple;
+div#one {
+    max-width: 100%;
+    min-height: 500px;
 }
 
 footer {
@@ -177,7 +176,7 @@ aside header {
     margin-left: 15px;
 }
 
-canvas#two {
+div#two {
     max-width: 100%;
     min-height: 359px;
     border: thin solid rebeccapurple;
