@@ -1,5 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins&family=Roboto&family=Sigmar+One&display=swap');
 
+* {
+    color: #202124;
+}
+
 body {
     padding: 0px;
     margin: 0px;
@@ -10,7 +14,7 @@ div.page {
     padding: inherit;
     border: thin solid red;
     font-family: 'Roboto', sans-serif;
-    width: 1000px;
+    width: 1100px;
 }
 
 #mainHeader {
@@ -72,107 +76,120 @@ span.price {
     border-right: 1px solid #dadada;
 }
 
-
-
-/*body {
-    margin: 0px;
+div#divContent {
+    padding: 0px 15px;
+    min-height: 500px;
+    display: flex;
+    justify-content: space-between;
 }
 
-div.page {
-    margin: 0px auto;
-    width: 1000px;
+section#content {
+    width: 60%;
+    border-right: 1px solid #dadada;
 }
 
-#mainHeader {
-    border: thin solid rgba(144, 144, 144, 0.904);
-    font-weight: bold;
-    font-family: 'Roboto', sans-serif;
-    text-align: center;
-    height: 100px;
+#contentHeader {
+    color: #202124;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0px 15px 0px 10px;
 }
 
-#mainHeader h1 {
-    margin: 25px auto;
+label {
+    font-size: large;
 }
 
-section#indexes {
-    margin: inherit;
+#selection {
+    text-transform: uppercase;
+    background-color: white;
+    border: 1px solid #e7e7e7;
+    border-bottom: 2px solid #ddd;
+    border-radius: 2px;
+    padding: 4px 10px;
 }
 
-ul {
-    text-align: center;
-    padding: 0;
-    margin: 0px;
-    height: 70px;
-    border: thin solid rgba(144, 144, 144, 0.904);
+#navButtons {
+    padding: 5px 10px;
 }
 
-li{
-    list-style-type: none;
-    padding: 10px 5px;
-    font-family: 'Roboto', sans-serif;
-    height: 50px;
-    margin: 0px;
-    width: 18%;
-    border-right: 1px solid rgba(144, 144, 144, 0.904);
-    display: inline-block;
+button {
+    text-transform: uppercase;
+    background-color: white;
+    border: 1px solid #e7e7e7;
+    border-bottom: 2px solid #ddd;
+    border-radius: 2px;
+    padding: 4px 17px;
 }
 
-#last {
-    border: none;
+button:hover {
+    box-shadow: 2px 4px 5px gray;
 }
 
-.indexName {
-    margin: 0px;
-    text-align: center;
+button:active {
+    background-color: #00c3ff;
+    border: 1px solid rgb(0, 107, 194);
+    border-bottom: 2px solid rgb(0, 107, 194);;
 }
 
-.values {
-    margin: 0px;
-    padding: 10px 0px;
+canvas#one {
+    max-width: 95%;
+    min-height: 359px;
+    border: thin solid purple;
 }
 
-.price {
-    padding: 0px 10px 0px 5px;
-    border-right: 1px solid rgba(144, 144, 144, 0.904);
-    text-align: left;
+footer {
+    margin-top: 15px;
+}
+
+footer#oneFoot{
+    display: flex;
+    justify-content: space-between;
+}
+
+div.footerContent {
+    font-size: 14px;
+    padding: 0px 15px 10px;
+    width: 33.333%;
+}
+
+table {
+    width: 100%;
+}
+
+.labels {
     float: left;
+    color: #3c4043;
 }
 
-.val {
-    text-align: right;
+.labelsValue {
     float: right;
-}
-
-#content{
-    height: 500px;
-    width: 650px;
-    border: thin solid rgba(144, 144, 144, 0.904);
-    float: left;
-}
-
-hgroup {
-    float: left;
-    border: thin solid rgba(144, 144, 144, 0.904);
-}
-
-form {
-    float: right;
+    color: #70757a;
 }
 
 aside {
-    height: 500px;
-    border: thin solid rgba(144, 144, 144, 0.904);
+    margin: 0px;
+    width: 40%;
+    padding: 0px 15px;
 }
 
-.chart {
-    clear: both;
-    border: thin solid rgba(144, 144, 144, 0.904);
-    margin: 0px 10px;
-    height: 100px;
-    width: 300px;
+aside header {
+    margin-left: 15px;
 }
 
-#one {
-    width: 95%;
-} */
+canvas#two {
+    max-width: 100%;
+    min-height: 359px;
+    border: thin solid rebeccapurple;
+}
+
+footer#secondFoot {
+    display: flex;
+    justify-content: space-between;
+}
+
+div.footerContent2 {
+    font-size: 14px;
+    padding: 0px 15px 10px;
+    width: 49%;
+}
