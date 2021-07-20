@@ -53,30 +53,27 @@
             <section id="content">
                 <header id="contentHeader">
                     <hgroup>
-                        <h1 id="actionName">Nome da ação</h1>
-                        <h2 id="actionValue">Valor</h2>
+                        <h1 id="actionName">Nome da ação</h1> 
+                        <h2 id="actionValue">Valor</h2> BRL
+                        <p id="time">oi</p>
                     </hgroup>
-                    <div>
-                        <label for="selection">Sigla:</label>
-                        <select name="action" id="selection">
-                            <option value="1">LG</option>
-                            <option value="2">BR</option>
-                            <option value="3">US</option>
-                            <option value="4">UK</option>
-                            <option value="5">VIT</option>
-                        </select>
+                    <div class="container">
+                        <div class="autocomplete">
+                            <input type="text" name="sigla" id="input-text" class="input-text" placeholder="sigla">
+                        </div>
+                        <button id="submit">OK</button>
                     </div>
                 </header>
                 <div id="navButtons">
-                    <button class="buttons" id="bt1">1m</button>
-                    <button class="buttons" id="bt2">6m</button>
-                    <button class="buttons" id="bt3">1y</button>
-                    <button class="buttons" id="bt4">5y</button>
-                    <button class="buttons" id="bt5">ytd</button>
-                    <button class="buttons" id="bt6">all</button>
+                    <button class="buttons" id="bt1">1d</button>
+                    <button class="buttons" id="bt2">1s</button>
+                    <button class="buttons" id="bt3">1m</button>
+                    <button class="buttons" id="bt4">6m</button>
+                    <button class="buttons" id="bt5">1a</button>
+                    <button class="buttons" id="bt6">5a</button>
+                    <button class="buttons" id="bt7">all</button>
                 </div>
                 <div class="chart" id="one"></div>
-                <!-- <script src="teste_graficos/testejs.js"></script> -->
                 <footer id="oneFoot">
                     <div class="footerContent">
                         <table>
@@ -131,8 +128,8 @@
             <aside>
                 <header id="asideHeader">
                     <hgroup>
-                        <h1>Nome da ação</h1>
-                        <h2>Valor</h2>
+                        <h1>Nome da ação</h1> 
+                        <h2>Valor</h2> BRL
                     </hgroup>
                 </header>
                 <div class="chart" id="two"></div>
@@ -181,6 +178,7 @@
             </aside> <!-- Second chart -->
         </div>
     </div> <!-- Page -->
+    <script src="./js/script.js"></script>
 </body>
 
 </html>
