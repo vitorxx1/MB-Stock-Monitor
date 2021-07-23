@@ -53,15 +53,15 @@
             <section id="content">
                 <header id="contentHeader">
                     <hgroup>
-                        <h1 id="actionName">Nome da ação</h1> 
+                        <h1 id="actionName" class="cont1">Nome da ação</h1> 
                         <h2 id="actionValue">Valor</h2> BRL
                         <p id="time">oi</p>
                     </hgroup>
                     <div class="container">
                         <div class="autocomplete">
-                            <input type="text" name="sigla" id="input-text" class="input-text" placeholder="sigla">
+                            <input type="text" name="sigla" id="input-text" class="input-text cont1" placeholder="sigla">
                         </div>
-                        <button id="submit">OK</button>
+                        <button id="submit" class="cont1 submitbts">OK</button>
                     </div>
                 </header>
                 <div id="navButtons">
@@ -128,9 +128,15 @@
             <aside>
                 <header id="asideHeader">
                     <hgroup>
-                        <h1>Nome da ação</h1> 
+                        <h1 class="cont2">Nome da ação</h1> 
                         <h2>Valor</h2> BRL
                     </hgroup>
+                    <div class="container" id="container2">
+                        <div class="autocomplete">
+                            <input type="text" name="sigla" id="input-text2" class="input-text cont2" placeholder="sigla">
+                        </div>
+                        <button id="submit2" class="cont2 submitbts">OK</button>
+                    </div>
                 </header>
                 <div class="chart" id="two"></div>
                 <footer id="secondFoot">
@@ -178,7 +184,7 @@
             </aside> <!-- Second chart -->
         </div>
     </div> <!-- Page -->
-    <script src="./js/script.js"></script>
+    <script type="module" src="./js/script.js"></script>
 </body>
 
 </html>

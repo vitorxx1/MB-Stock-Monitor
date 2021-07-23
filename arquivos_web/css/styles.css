@@ -112,11 +112,9 @@ hgroup {
     color: rgba(0,0,0,.62);
 }
 
-hgroup * {
-    margin: 10px 0px;
-}
 
 hgroup h2 {
+    width: auto;
     margin-right: 5px;
     display: inline-block;
 }
@@ -238,6 +236,9 @@ aside {
 }
 
 aside header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     margin-left: 15px;
 }
 
