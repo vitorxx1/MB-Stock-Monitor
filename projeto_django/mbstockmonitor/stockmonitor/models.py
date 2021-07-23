@@ -24,7 +24,7 @@ class Cotacao(models.Model):
     cot_max = models.DecimalField(max_digits=6, decimal_places=2)
     cot_min = models.DecimalField(max_digits=6, decimal_places=2)
     cot_fechamento = models.DecimalField(max_digits=6, decimal_places=2)
-    cot_volume = models.IntegerField()
+    cot_volume = models.BigIntegerField()
 
     class Meta:
         managed = False

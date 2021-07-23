@@ -40,7 +40,7 @@ create table cotacao(
     cot_max decimal(6,2) not null,
     cot_min decimal(6,2) not null,
     cot_fechamento decimal(6,2) not null,
-    cot_volume int not null,
+    cot_volume bigint(12) not null,
     constraint fk_cotacao_acao foreign key(aco_codigo) references acao(aco_codigo) on delete cascade on update cascade,
     constraint pk_cotacao primary key(cot_data, aco_codigo)
 );
