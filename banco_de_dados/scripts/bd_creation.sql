@@ -19,8 +19,10 @@ create table acao(
 create table indice(
 	ind_sigla varchar(15),
     ind_nome varchar(55) not null,
+    ind_codigo_yf varchar(8) not null,
     constraint pk_indice primary key(ind_sigla),
-    constraint uq_ind_nome unique(ind_nome)
+    constraint uq_ind_nome unique(ind_nome),
+    constraint uq_ind_codigo_yf unique(ind_codigo_yf)
 );
 
 create table listagem(

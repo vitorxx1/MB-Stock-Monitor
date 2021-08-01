@@ -6,12 +6,13 @@ import yfinance as yf
 from datetime import date, timedelta
 # Create your views here.
 
-def home(request):
+def get_stock_data(request):
 
-	ticker = 'PETR4'
+	ticker = 'VALE3'
+	yday = date.today() - timedelta(1)
 	last_day = last_day_bd(ticker)
 
-	if last_day != date.today():
+	if last_day != yday:
 		atualiza_banco(last_day + timedelta(1), ticker)
 
 	dados_historicos = get_dados_historicos(ticker)
@@ -38,7 +39,7 @@ def last_day_bd(ticker):
 def atualiza_banco(start, ticker):
 
 	try:
-		   df_acao = yf.download('{}.SA'.format(ticker),start=str(start))
+		   df_acao = yf.download('{}.SA'.format(ticker),start=str(start), end=date.today())
 	except:
 		print(f'Falhou para {ticker}')
 		    
@@ -67,25 +68,23 @@ def atualiza_banco(start, ticker):
 def get_dados_historicos(ticker):
 
 	with connection.cursor() as cursor:
-		cursor.execute("select * from cotacao where aco_codigo = %s",[ticker])
+		cursor.execute("select cot_data, cot_fechamento from cotacao where aco_codigo = %s",[ticker])
 		query = dict_return(cursor)
 
 	dados_historicos = {}
 	for reg in query:
 		data = str(reg["cot_data"])
 		dados_historicos[data] = {}
-		dados_historicos[data]["Open"] = str(reg["cot_abertura"])
-		dados_historicos[data]["High"] = str(reg["cot_max"])
-		dados_historicos[data]["Low"] = str(reg["cot_min"])
 		dados_historicos[data]["Close"] = str(reg["cot_fechamento"])
-		dados_historicos[data]["Volume"] = str(reg["cot_volume"])
 
 	return dados_historicos
 
 def get_intraday(ticker):
 
 	today = date.today()
-	df_acao = yf.download('VALE3.SA',start=today,interval='5m')
+	df_acao = yf.download('{}.SA'.format(ticker),start=today,interval='5m')
+	if len(df_acao) == 0:
+		df_acao = yf.download('{}.SA'.format(ticker),start=last_day_bd(ticker),interval='5m')
 	df_acao = df_acao.drop(columns=['Adj Close'])
 	dict_acao = df_acao.to_dict(orient='index')
 		        

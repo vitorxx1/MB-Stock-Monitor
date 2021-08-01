@@ -4,5 +4,5 @@ from . import views
 
 app_name = 'stockmonitor'
 urlpatterns = [
-    path('', views.home, name='home'),
+    path('', views.get_stock_data, name='stocks'),
 ]

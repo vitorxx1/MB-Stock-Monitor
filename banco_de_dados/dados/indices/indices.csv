@@ -1,22 +1,22 @@
-sigla;nome
-Ibovespa;Índice Bovespa
-IBrX 100;Índice Brasil 100
-IBrX 50;Índice Brasil 50
-IBrA;Índice Brasil Amplo BM&FBOVESPA
-IGC;Índice de Ações com Governança Corporativa Diferenciada
-ITAG;Índice de Ações com Tag Along Diferenciado
-IGCT;Índice de Governança Corporativa Trade
-IGC-NM;Índice de Governança Corporativa – Novo Mercado
-ICO2;Índice Carbono Eficiente
-ISE;Índice de Sustentabilidade Empresarial
-IFNC;Índice BM&FBOVESPA Financeiro
-ICON;Índice de Consumo
-IEE;Índice de Energia Elétrica
-IMAT;Índice de Materiais Básicos BM&FBOVESPA
-IDIV;Índice Dividendos BM&FBOVESPA
-INDX;Índice do Setor Industrial
-IMOB;Índice Imobiliário
-MLCX;Índice MidLarge Cap
-SMLL;Índice Small Cap
-UTIL;Índice Utilidade Pública BM&FBOVESPA
-IVBX 2;Índice Valor BM&FBOVESPA
+sigla;nome;codigo yf
+Ibovespa;Índice Bovespa;^BVSP
+IBrX 100;Índice Brasil 100;IBXX.SA
+IBrX 50;Índice Brasil 50;^IBX50
+IBrA;Índice Brasil Amplo BM&FBOVESPA;IBRA.SA
+IGC;Índice de Ações com Governança Corporativa Diferenciada;^IGCX
+ITAG;Índice de Ações com Tag Along Diferenciado;ITAG.SA
+IGCT;Índice de Governança Corporativa Trade;IGCT.SA
+IGC-NM;Índice de Governança Corporativa – Novo Mercado;IGNM.SA
+ICO2;Índice Carbono Eficiente;ICO2.SA
+ISE;Índice de Sustentabilidade Empresarial;ISEE.SA
+IFNC;Índice BM&FBOVESPA Financeiro;IFNC.SA
+ICON;Índice de Consumo;ICON.SA
+IEE;Índice de Energia Elétrica;^IEE
+IMAT;Índice de Materiais Básicos BM&FBOVESPA;IMAT.SA
+IDIV;Índice Dividendos BM&FBOVESPA;IDIV.SA
+INDX;Índice do Setor Industrial;INDX.SA
+IMOB;Índice Imobiliário;IMOB.SA
+MLCX;Índice MidLarge Cap;MLCX.SA
+SMLL;Índice Small Cap;SMLL.SA
+UTIL;Índice Utilidade Pública BM&FBOVESPA;UTIL.SA
+IVBX 2;Índice Valor BM&FBOVESPA;^IVBX

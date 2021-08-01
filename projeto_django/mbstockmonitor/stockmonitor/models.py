@@ -58,6 +58,7 @@ class Empresa(models.Model):
 class Indice(models.Model):
     ind_sigla = models.CharField(primary_key=True, max_length=15)
     ind_nome = models.CharField(unique=True, max_length=55)
+    ind_codigo_yf = models.CharField(unique=True, max_length=8)
 
     class Meta:
         managed = False
