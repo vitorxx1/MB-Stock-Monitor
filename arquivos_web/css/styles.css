@@ -128,7 +128,7 @@ hgroup h2 {
 .autocomplete {
     position: relative;
     display: inline-block;
-    width: 100px;
+    width: 120px;
     margin-right: 2px;
 }
 
@@ -140,22 +140,33 @@ hgroup h2 {
 
 .autocomplete-list {
     border: none;
+    background-color: #fff; 
     position: absolute;
     border: 1px solid #d4d4d4;
-    border-bottom: none;
+    padding: 0px;
+    /* border-bottom: none; */
     border-top: none;
     z-index: 99;
     top: 100%;
     left: 0;
     right: 0;
+    max-height: 190px;
+    overflow: scroll;
+    min-width: fit-content;
 }
 
 .autocomplete-list div {
     border: none;
     padding: 10px;
     cursor: pointer;
-    background-color: #fff; 
+    margin: 0px;
+    box-sizing: border-box;
+    width: 100%;
     border-bottom: 1px solid #d4d4d4; 
+}
+
+.autocomplete-list div:last-child {
+    border: none;
 }
 
 .autocomplete-list div:hover {

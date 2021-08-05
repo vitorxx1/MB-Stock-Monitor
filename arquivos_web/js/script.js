@@ -1,4 +1,29 @@
 import { countries } from "./arrays.js";
+import { _json } from "./arrays.js";
+
+var teste = Object.values(_json)[1];
+
+function data(keys, values) { 
+    var arr = [], aux = [];
+    for (let i = 0; i < keys.length; i++) {
+        aux = [Date.parse(keys[i] + ' 00:00:00'), Number.parseFloat(values[i].Close)];
+        arr.push(aux);
+    }
+    return arr;
+}
+
+var arr_data = data(Object.keys(teste), Object.values(teste))
+
+// var keys = Object.keys(teste);
+// var values = Object.values(teste);
+// var array_teste = [];
+
+// for (let i = 0; i < keys.length; i++) {
+//     let str = keys[i] + ' 00:00:00';
+//     var data = new Date(str);
+//     let val = Number.parseInt(values[i].close)
+// }
+
 
 /**
  * First Chart start
@@ -194,7 +219,6 @@ Array.prototype.forEach.call(document.getElementsByTagName('input'), function (e
 function submitButtons(bt, arr) {
     bt.addEventListener('click', function (e) {
         var classElements = document.getElementsByClassName(this.classList[0]);
-        console.log(classElements);
         if (classElements.length > 2) {
             let label = classElements[0];
             let input = classElements[1];
