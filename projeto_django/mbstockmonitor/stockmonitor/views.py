@@ -7,6 +7,9 @@ from datetime import date, timedelta
 from stockmonitor.sm_functions import *
 # Create your views here.
 
+def home(request):
+	return render(request,'index.html',{})
+
 def get_stock_data(request):
 
 	ticker = 'VALE3'
