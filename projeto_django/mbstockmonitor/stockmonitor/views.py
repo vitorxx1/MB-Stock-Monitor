@@ -24,7 +24,7 @@ def get_stock_data(request):
 
 	acao = {'Dados do dia': intraday,'Dados Historicos': dados_historicos}
 
-	return HttpResponse(json.dumps(acao))
+	return HttpResponse(json.dumps(acao), content_type='application/json')
 
 def get_index_data(request):
 
@@ -40,4 +40,4 @@ def get_index_data(request):
 
 	index = {'Dados do dia': intraday,'Dados Historicos': dados_historicos}
 
-	return HttpResponse(json.dumps(index))	        
+	return HttpResponse(json.dumps(index), content_type='application/json')	        
