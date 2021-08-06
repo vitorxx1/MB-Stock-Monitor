@@ -12,9 +12,10 @@ from django.views.decorators.csrf import csrf_exempt
 def home(request):
 	return render(request,'index.html',{})
 
+@csrf_exempt
 def get_stock_data(request):
 
-	ticker = request.POST.get('ticker', 'null')
+	ticker = request.POST.get('ticker')
 	yday = date.today() - timedelta(1)
 	last_day = last_day_bd_acao(ticker)
 
