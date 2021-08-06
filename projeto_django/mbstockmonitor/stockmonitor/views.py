@@ -50,9 +50,6 @@ def get_index_stock(request):
 
 	index_stock = get_stock_by_index()
 
-<<<<<<< HEAD
-	return HttpResponse(json.dumps(index_stock), content_type='application/json')     
-=======
 	return HttpResponse(json.dumps(index_stock), content_type='application/json')
 
 @csrf_exempt
@@ -63,4 +60,3 @@ def get_stock_diff_view(request):
 	stock_diff = get_stock_diff(ticker)
 
 	return HttpResponse(json.dumps(stock_diff), content_type='application/json')
->>>>>>> 711ee1d6344848f6dae6c1c932802223c6679018
