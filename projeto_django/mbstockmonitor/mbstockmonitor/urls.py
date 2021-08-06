@@ -20,5 +20,6 @@ from stockmonitor import views
 urlpatterns = [
 	path('stockmonitor/', include('stockmonitor.urls')),
     path('admin/', admin.site.urls),
-    path('', views.home)
+    path('', views.home),
+    path('index/', views.get_index_data, name='indexes'),
 ]
