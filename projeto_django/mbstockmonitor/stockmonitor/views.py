@@ -29,9 +29,10 @@ def get_stock_data(request):
 
 	return HttpResponse(json.dumps(acao), content_type='application/json')
 
+@csrf_exempt
 def get_index_data(request):
 
-	cod_index = ticker = request.POST.get('index', 'null')
+	cod_index = ticker = request.POST.get('ticker', 'null')
 	yday = date.today() - timedelta(1)
 	last_day = last_day_bd_index(cod_index)
 
@@ -49,4 +50,17 @@ def get_index_stock(request):
 
 	index_stock = get_stock_by_index()
 
+<<<<<<< HEAD
 	return HttpResponse(json.dumps(index_stock), content_type='application/json')     
+=======
+	return HttpResponse(json.dumps(index_stock), content_type='application/json')
+
+@csrf_exempt
+def get_stock_diff_view(request):
+
+	ticker = request.POST.get('ticker', 'null')
+
+	stock_diff = get_stock_diff(ticker)
+
+	return HttpResponse(json.dumps(stock_diff), content_type='application/json')
+>>>>>>> 711ee1d6344848f6dae6c1c932802223c6679018

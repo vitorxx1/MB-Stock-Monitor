@@ -22,5 +22,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.home),
     path('index/', views.get_index_data, name='indexes'),
-    path('index_stock/', views.get_index_stock, name='indexes_stocks')
+    path('index_stock/', views.get_index_stock, name='indexes_stocks'),
+    path('stock_diff/', views.get_stock_diff_view, name='stock_diff')
 ]
