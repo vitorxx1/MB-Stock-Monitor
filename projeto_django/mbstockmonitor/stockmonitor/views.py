@@ -5,8 +5,10 @@ import json
 import yfinance as yf
 from datetime import date, timedelta
 from stockmonitor.sm_functions import *
+from django.views.decorators.csrf import csrf_exempt
 # Create your views here.
 
+@csrf_exempt
 def home(request):
 	return render(request,'index.html',{})
 
