@@ -168,5 +168,28 @@ def get_stock_by_index():
 				stock_names_array.append(stock[0])
 
 			index_stock[index[0]] = stock_names_array
-			
+
 	return index_stock
+
+def get_stock_diff(ticker):
+
+	today = date.today()
+	df_acao = yf.download('{}.SA'.format(ticker),start=today)
+	#Caso o DataFrame esteja vazio, não há dados diários e pega os últimos disponíveis
+	if len(df_acao) == 0:
+		df_acao = yf.download('{}.SA'.format(ticker),start=last_day_bd_acao(ticker))
+		data = last_day_bd_acao(ticker) - timedelta(1)
+		with connection.cursor() as cursor:
+			cursor.execute("select cot_fechamento from cotacao where aco_codigo = %s and cot_data = %s",[ticker, data])
+			last_close = cursor.fetchone()
+	else:
+		data = last_day_bd_acao(ticker)
+		with connection.cursor() as cursor:
+			cursor.execute("select cot_fechamento from cotacao where aco_codigo = %s and cot_data = %s",[ticker, data])
+			last_close = cursor.fetchone()
+
+	dados = {}
+	perc = 100 - (df_acao.iloc[:,3].values[0]/float(last_close[0]))*100
+	dados["percent"] = perc
+
+	return dados
