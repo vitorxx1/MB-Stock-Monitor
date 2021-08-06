@@ -12,7 +12,7 @@ def home(request):
 
 def get_stock_data(request):
 
-	ticker = 'VALE3'
+	ticker = request.POST.get('ticker', 'null')
 	yday = date.today() - timedelta(1)
 	last_day = last_day_bd_acao(ticker)
 
@@ -28,7 +28,7 @@ def get_stock_data(request):
 
 def get_index_data(request):
 
-	cod_index = 'Ibovespa'
+	cod_index = ticker = request.POST.get('index', 'null')
 	yday = date.today() - timedelta(1)
 	last_day = last_day_bd_index(cod_index)
 
@@ -40,4 +40,10 @@ def get_index_data(request):
 
 	index = {'Dados do dia': intraday,'Dados Historicos': dados_historicos}
 
-	return HttpResponse(json.dumps(index), content_type='application/json')	        
+	return HttpResponse(json.dumps(index), content_type='application/json')
+
+def get_index_stock(request):
+
+	index_stock = get_stock_by_index()
+
+	return HttpResponse(json.dumps(index_stock), content_type='application/json')     

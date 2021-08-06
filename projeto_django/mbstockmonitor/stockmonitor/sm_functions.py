@@ -149,3 +149,24 @@ def get_intraday_index(cod_index):
 	    intraday[f"{key.date()} {key.time()}"]["Close"] = str(round(dict_index[key]["Close"],2))
 
 	return intraday
+
+def get_stock_by_index():
+
+	with connection.cursor() as cursor:
+		cursor.execute("select ind_sigla from indice")
+		indexes_names = cursor.fetchall()
+
+	index_stock = {}
+
+	with connection.cursor() as cursor:
+		for index in indexes_names:
+			cursor.execute("select aco_codigo from listagem where ind_sigla = %s",[index[0]])
+			stock_names = cursor.fetchall()
+
+			stock_names_array = []
+			for stock in stock_names:
+				stock_names_array.append(stock[0])
+
+			index_stock[index[0]] = stock_names_array
+			
+	return index_stock
