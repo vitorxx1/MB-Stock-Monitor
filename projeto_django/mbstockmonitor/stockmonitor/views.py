@@ -12,6 +12,7 @@ from django.views.decorators.csrf import csrf_exempt
 def home(request):
 	return render(request,'index.html',{})
 
+@csrf_exempt
 def get_stock_data(request):
 
 	ticker = request.POST.get('ticker', 'null')
@@ -28,6 +29,7 @@ def get_stock_data(request):
 
 	return HttpResponse(json.dumps(acao), content_type='application/json')
 
+@csrf_exempt
 def get_index_data(request):
 
 	cod_index = ticker = request.POST.get('index', 'null')
