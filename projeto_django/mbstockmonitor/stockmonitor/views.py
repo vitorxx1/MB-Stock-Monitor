@@ -15,17 +15,19 @@ def home(request):
 @csrf_exempt
 def get_stock_data(request):
 
-	ticker = request.POST.get('ticker', 'null')
+	#ticker = request.POST.get('ticker', 'null')
+	ticker = 'PETR4'
 	yday = date.today() - timedelta(1)
 	last_day = last_day_bd_acao(ticker)
 
 	if last_day != yday:
 		atualiza_acao_banco(last_day + timedelta(1), ticker)
 
-	dados_historicos = get_dados_historicos_acao(ticker)
+	indicadores = get_indicadores_stock(ticker)
 	intraday = get_intraday_acao(ticker)
+	dados_historicos = get_dados_historicos_acao(ticker)
 
-	acao = {'Dados do dia': intraday,'Dados Historicos': dados_historicos}
+	acao = {'Indicadores': indicadores,'Dados do dia': intraday,'Dados Historicos': dados_historicos}
 
 	return HttpResponse(json.dumps(acao), content_type='application/json')
 

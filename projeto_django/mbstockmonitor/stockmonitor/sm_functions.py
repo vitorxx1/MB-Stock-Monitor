@@ -175,10 +175,14 @@ def get_stock_diff(ticker):
 
 	today = date.today()
 	df_acao = yf.download('{}.SA'.format(ticker),start=today)
-	#Caso o DataFrame esteja vazio, não há dados diários e pega os últimos disponíveis
-	if len(df_acao) == 0:
+	#Caso o DataFrame esteja vazio ou a data não seja a do dia atual
+	if len(df_acao) == 0 or df_acao.index.date[0] != date.today():
 		df_acao = yf.download('{}.SA'.format(ticker),start=last_day_bd_acao(ticker))
-		data = last_day_bd_acao(ticker) - timedelta(1)
+		with connection.cursor() as cursor:
+			cursor.execute("select max(cot_data) from cotacao where aco_codigo = %s"+
+			 				"and cot_data not in(select max(cot_data) from cotacao where aco_codigo = %s)",[ticker,ticker])
+			data = cursor.fetchone()[0]
+
 		with connection.cursor() as cursor:
 			cursor.execute("select cot_fechamento from cotacao where aco_codigo = %s and cot_data = %s",[ticker, data])
 			last_close = cursor.fetchone()
@@ -194,3 +198,17 @@ def get_stock_diff(ticker):
 	dados["preco"] = last_close[0]
 
 	return dados
+
+def get_indicadores_stock(ticker):
+	
+	df = yf.Ticker('{}.SA'.format(ticker))
+
+	indicadores = {}
+	indicadores["LPA"] = str(round(df.info["trailingEps"],2))
+	indicadores["P/L"] = str(round(df.info["trailingPE"],2))
+	indicadores["Alta 52"] = str(round(df.info["fiftyTwoWeekHigh"],2))
+	indicadores["Baixa 52"] = str(round(df.info["fiftyTwoWeekLow"],2))
+	indicadores["Ult Dividendo"] = str(round(df.info["lastDividendValue"],2))
+	indicadores["Prox Dividendo"] = str(round(df.info["dividendRate"],2))
+
+	return indicadores
