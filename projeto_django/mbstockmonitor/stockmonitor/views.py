@@ -22,7 +22,6 @@ def get_stock_data(request):
 	if last_day != yday:
 		atualiza_acao_banco(last_day + timedelta(1), ticker)
 
-	indicadores = get_indicadores_stock(ticker)
 	intraday = get_intraday_acao(ticker)
 	dados_historicos = get_dados_historicos_acao(ticker)
 
@@ -61,3 +60,10 @@ def get_stock_diff_view(request):
 	stock_diff = get_stock_diff(ticker)
 
 	return HttpResponse(json.dumps(stock_diff), content_type='application/json')
+
+def get_indicadores_stock_view(request):
+
+	ticker = request.POST.get('ticker')
+	indicadores = get_indicadores_stock(ticker)
+
+	return HttpResponse(json.dumps(indicadores), content_type='application/json')
