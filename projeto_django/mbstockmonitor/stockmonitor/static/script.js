@@ -13,8 +13,7 @@ var arrChart = {
 };
 
 var chartOne;
-
-// var chartTwo;
+var chartTwo;
 
 var systemTime = new Date();
 
@@ -145,7 +144,7 @@ function autocomplete(input, arr) {
 /**
  * First Chart start
  */
-function chartRender(dados) {
+function chartRenderOne(dados) {
 
     if (chartOne) {
         chartOne.destroy();
@@ -259,7 +258,89 @@ function chartRender(dados) {
 /**
  * Second Chart start
  */
+ function chartRenderTwo(dados) {
 
+    if (chartTwo) {
+        chartTwo.destroy();
+    }
+
+    // var tema = {
+    //     mode: 'light',
+    //     palette: 'palette1',
+    //     monochrome: {
+    //         enabled: true,
+    //         color: '#255aee',
+    //         shadeTo: 'light',
+    //         shadeIntensity: 0.65
+    //     },
+    // };
+
+    // if ($("#acao_diff").hasClass('positive')) {
+    //     tema.monochrome.color = '#3CE610';
+    // } else if ($("#acao_diff").hasClass('negative')) {
+    //     tema.monochrome.color = '#FF0000';
+    // } else {
+    //     tema.monochrome.color = '#5F6E7A';
+    // }
+
+    var options = {
+        series: [{
+            data: dados
+        }],
+        chart: {
+            id: 'area-datetime',
+            type: 'area',
+            height: 400,
+            width: 400,
+            zoom: {
+                autoScaleYaxis: true
+            },
+            toolbar: {
+                show: false
+            }
+        },
+        dataLabels: {
+            enabled: false
+        },
+        markers: {
+            size: 0,
+            style: 'hollow',
+        },
+        xaxis: {
+            tooltip: {
+                enabled: false
+            },
+            type: 'datetime',
+            tickAmount: 6,
+        },
+        tooltip: {
+            enabled: true,
+            x: {
+                format: 'dd MMM yyyy HH:mm'
+            },
+            y: {
+                formatter: (e) => { return 'R$' + e },
+                title: {
+                    formatter: (e) => { return 'Preço:' }
+                }
+            },
+            marker: false
+        },
+        fill: {
+            type: 'gradient',
+            gradient: {
+                shadeIntensity: 1,
+                opacityFrom: 0.7,
+                opacityTo: 0.9,
+                stops: [0, 100]
+            }
+        },
+    }
+
+    chartTwo = new ApexCharts(document.getElementById('two'), options);
+
+    chartTwo.render();
+}
 /**
  * Second Chart end
  */
@@ -297,9 +378,7 @@ function processHist(arr, chart) {
 
     var keys = Object.keys(arr);
 
-    var index = isDayOff() ? (-2) : (-1);
-
-    ultimoDado.prevDay = arr[keys.at(index)].Close;
+    ultimoDado.prevDay = arr[keys.at(-1)].Close;
 
     keys.forEach(e => {
         var aux = [];
@@ -308,11 +387,6 @@ function processHist(arr, chart) {
 
         arrChart[chart].dadosHistoricos.push(aux);
     });
-
-    if (isDayOff()) {
-        arrChart[chart].dadosHistoricos.pop();
-        arrChart[chart].dadosHistoricos.push(arrChart[chart].intraDay.at(-1));
-    }
 }
 
 /**
@@ -380,6 +454,8 @@ $('#submit2').on('click', function () {
 
                 processPropertiesIndex();
 
+                chartRenderTwo(arrChart['two'].intraDay)
+
                 input1.value = acoes[inputValue][0];
 
                 document.getElementById('submit').click();
@@ -400,7 +476,7 @@ $('#bt1').on('click', function () {
     if (!($(this).hasClass('active'))) {
         resetCssClasses(document.getElementById('bt1'));
         setDiff(prevClose('one'), 'one', 'último dia');
-        chartRender(arrChart.one.intraDay);
+        chartRenderOne(arrChart.one.intraDay);
     }
 });
 
@@ -411,7 +487,7 @@ $('#bt2').on('click', function () {
         });
         resetCssClasses(document.getElementById('bt2'));
         setDiff(newArr[0][1], 'one', 'última semana');
-        chartRender(newArr);
+        chartRenderOne(newArr);
     }
 });
 
@@ -422,7 +498,7 @@ $('#bt3').on('click', function () {
         });
         resetCssClasses(document.getElementById('bt3'));
         setDiff(newArr[0][1], 'one', 'último mês');
-        chartRender(newArr);
+        chartRenderOne(newArr);
     }
 });
 
@@ -433,7 +509,7 @@ $('#bt4').on('click', function () {
         });
         resetCssClasses(document.getElementById('bt4'));
         setDiff(newArr[0][1], 'one', 'último 6 meses');
-        chartRender(newArr);
+        chartRenderOne(newArr);
     }
 });
 
@@ -444,7 +520,7 @@ $('#bt5').on('click', function () {
         });
         resetCssClasses(document.getElementById('bt5'));
         setDiff(newArr[0][1], 'one', 'último ano');
-        chartRender(newArr);
+        chartRenderOne(newArr);
     }
 });
 
@@ -455,7 +531,7 @@ $('#bt6').on('click', function () {
         });
         resetCssClasses(document.getElementById('bt6'));
         setDiff(newArr[0][1], 'one', 'últimos 5 anos');
-        chartRender(newArr);
+        chartRenderOne(newArr);
     }
 });
 
@@ -463,8 +539,36 @@ $('#bt7').on('click', function () {
     if (!($(this).hasClass('active'))) {
         resetCssClasses(document.getElementById('bt7'));
         setDiff(arrChart.one.dadosHistoricos[0][1], 'one', 'desde o começo');
-        chartRender(arrChart.one.dadosHistoricos)
+        chartRenderOne(arrChart.one.dadosHistoricos)
     }
+});
+
+$('#bt12').on('click', function () {
+    
+});
+
+$('#bt22').on('click', function () {
+    
+});
+
+$('#bt32').on('click', function () {
+    
+});
+
+$('#bt42').on('click', function () {
+    
+});
+
+$('#bt52').on('click', function () {
+    
+});
+
+$('#bt62').on('click', function () {
+    
+});
+
+$('#bt72').on('click', function () {
+    
 });
 // /**
 //  * Buttons events end
@@ -476,8 +580,7 @@ $('#bt7').on('click', function () {
  * Funções auxiliares start
  */
 function prevClose(chart) {
-    var index = isDayOff() ? (-2) : (-1);
-    return arrChart[chart].dadosHistoricos.at(index)[1];
+    return arrChart[chart].dadosHistoricos.at(-1)[1];
 }
 
 function setDiff(prev, chart, periodo) {
@@ -732,8 +835,6 @@ function processIndexes() {
             }
         });
     });
-    console.log(arrPercentText);
-    console.log(arrPreco);
     $(".price").each(function (index) {
         $(this).text("R$ " + arrPreco[index]);
     });
@@ -773,6 +874,6 @@ $(document).ready(function () {
             document.getElementById('submit2').click();
         }
     });
-    setInterval(processIndexes, 60000);
+    // setInterval(processIndexes, 60000);
 });
 
