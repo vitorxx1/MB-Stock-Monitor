@@ -83,6 +83,9 @@ def last_day_bd_index(cod_index):
 		cursor.execute('select max(cot_ind_data) from cotacao_indice where ind_sigla = %s',[cod_index])
 		data = cursor.fetchone()[0]
 
+	if data == None:
+		return 0;
+
 	return data;
 
 def atualiza_index_banco(start, cod_index):
@@ -118,10 +121,12 @@ def get_dados_historicos_index(cod_index):
 		query = dict_return(cursor)
 
 	dados_historicos = {}
-	for reg in query:
-		data = str(reg["cot_ind_data"])
-		dados_historicos[data] = {}
-		dados_historicos[data]["Close"] = str(reg["cot_ind_fechamento"])
+	
+	if query != None:
+		for reg in query:
+			data = str(reg["cot_ind_data"])
+			dados_historicos[data] = {}
+			dados_historicos[data]["Close"] = str(reg["cot_ind_fechamento"])
 
 	return dados_historicos
 
@@ -133,7 +138,7 @@ def get_intraday_index(cod_index):
 		cod_index_yf = cursor.fetchone()[0]
 
 	today = date.today()
-	df_index = yf.download(cod_index_yf,start=today,interval='5m')
+	df_index = yf.download(tickers=cod_index_yf,start=today,interval='5m')
 	#Caso o DataFrame esteja vazio, não há dados diários e pega os últimos disponíveis
 	if len(df_index) == 0:
 		df_index = yf.download(cod_index_yf,start=last_day_bd_index(cod_index),interval='5m')

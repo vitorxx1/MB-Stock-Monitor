@@ -15,8 +15,7 @@ def home(request):
 @csrf_exempt
 def get_stock_data(request):
 
-	#ticker = request.POST.get('ticker', 'null')
-	ticker = 'PETR4'
+	ticker = request.POST.get('ticker', 'null')
 	yday = date.today() - timedelta(1)
 	last_day = last_day_bd_acao(ticker)
 
@@ -34,11 +33,11 @@ def get_stock_data(request):
 @csrf_exempt
 def get_index_data(request):
 
-	cod_index = ticker = request.POST.get('ticker', 'null')
+	cod_index = request.POST.get('ticker', 'null')
 	yday = date.today() - timedelta(1)
 	last_day = last_day_bd_index(cod_index)
 
-	if last_day != yday:
+	if last_day != yday and last_day != 0:
 		atualiza_index_banco(last_day + timedelta(1), cod_index)
 
 	dados_historicos = get_dados_historicos_index(cod_index)
