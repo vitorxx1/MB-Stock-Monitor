@@ -187,7 +187,7 @@ def get_stock_diff(ticker):
 
 	if last_day != yday:
 		atualiza_acao_banco(last_day + timedelta(1), ticker)
-		
+
 	df_acao = yf.download('{}.SA'.format(ticker),start=today)
 	#Caso o DataFrame esteja vazio ou a data não seja a do dia atual
 	if len(df_acao) == 0 or df_acao.index.date[0] != date.today():
@@ -207,7 +207,7 @@ def get_stock_diff(ticker):
 			last_close = cursor.fetchone()
 
 	dados = {}
-	perc = 100 - (float(last_close[0])/df_acao.iloc[:,3].values[0])*100
+	perc = ((float(df_acao.iloc[:,3].values[0])/float(last_close))-1)*100
 	dados["percent"] = perc
 	dados["preco"] = str(df_acao.iloc[:,3].values[0])
 
