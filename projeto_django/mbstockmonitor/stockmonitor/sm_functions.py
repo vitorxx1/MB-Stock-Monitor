@@ -15,6 +15,9 @@ def last_day_bd_acao(ticker):
 		cursor.execute('select max(cot_data) from cotacao where aco_codigo = %s',[ticker])
 		data = cursor.fetchone()[0]
 
+	if data == None:
+		return 0;
+
 	return data;
 
 def atualiza_acao_banco(start, ticker):
@@ -210,7 +213,6 @@ def get_indicadores_stock(ticker):
 
 	indicadores = {}
 	indicadores["LPA"] = str(round(df.info["trailingEps"],2))
-	indicadores["P/L"] = str(round(df.info["trailingPE"],2))
 	indicadores["Alta 52"] = str(round(df.info["fiftyTwoWeekHigh"],2))
 	indicadores["Baixa 52"] = str(round(df.info["fiftyTwoWeekLow"],2))
 	indicadores["Ult Dividendo"] = str(round(df.info["lastDividendValue"],2))
