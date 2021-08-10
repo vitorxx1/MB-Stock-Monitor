@@ -25,7 +25,7 @@ def get_stock_data(request):
 	intraday = get_intraday_acao(ticker)
 	dados_historicos = get_dados_historicos_acao(ticker)
 
-	acao = {'Indicadores': indicadores,'Dados do dia': intraday,'Dados Historicos': dados_historicos}
+	acao = {'Dados do dia': intraday,'Dados Historicos': dados_historicos}
 
 	return HttpResponse(json.dumps(acao), content_type='application/json')
 
@@ -61,6 +61,7 @@ def get_stock_diff_view(request):
 
 	return HttpResponse(json.dumps(stock_diff), content_type='application/json')
 
+@csrf_exempt
 def get_indicadores_stock_view(request):
 
 	ticker = request.POST.get('ticker')
