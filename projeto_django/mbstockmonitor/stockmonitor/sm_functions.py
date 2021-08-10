@@ -182,6 +182,12 @@ def get_stock_by_index():
 def get_stock_diff(ticker):
 
 	today = date.today()
+	yday = date.today() - timedelta(1)
+	last_day = last_day_bd_acao(ticker)
+
+	if last_day != yday:
+		atualiza_acao_banco(last_day + timedelta(1), ticker)
+		
 	df_acao = yf.download('{}.SA'.format(ticker),start=today)
 	#Caso o DataFrame esteja vazio ou a data não seja a do dia atual
 	if len(df_acao) == 0 or df_acao.index.date[0] != date.today():
