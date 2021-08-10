@@ -209,7 +209,7 @@ def get_stock_diff(ticker):
 	dados = {}
 	perc = 100 - (float(last_close[0])/df_acao.iloc[:,3].values[0])*100
 	dados["percent"] = perc
-	dados["preco"] = str(last_close[0])
+	dados["preco"] = str(df_acao.iloc[:,3].values[0])
 
 	return dados
 
