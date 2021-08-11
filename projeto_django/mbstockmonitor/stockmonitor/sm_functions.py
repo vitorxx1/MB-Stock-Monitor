@@ -66,6 +66,7 @@ def get_intraday_acao(ticker):
 	#Caso o DataFrame esteja vazio, não há dados diários e pega os últimos disponíveis
 	if len(df_acao) == 0:
 		df_acao = yf.download('{}.SA'.format(ticker),start=last_day_bd_acao(ticker),interval='5m')
+	
 	df_acao = df_acao.drop(columns=['Adj Close'])
 	dict_acao = df_acao.to_dict(orient='index')
 		        
@@ -143,6 +144,9 @@ def get_intraday_index(cod_index):
 	today = date.today()
 	df_index = yf.download(tickers=cod_index_yf,start=today,interval='5m')
 	#Caso o DataFrame esteja vazio, não há dados diários e pega os últimos disponíveis
+	if last_day_bd_index(cod_index) == 0 and len(df_index) == 0:
+		df_index = yf.download(cod_index_yf,start=today-timedelta(1),end=today,interval='5m')
+
 	if len(df_index) == 0:
 		df_index = yf.download(cod_index_yf,start=last_day_bd_index(cod_index),interval='5m')
 	df_index = df_index.drop(columns=['Adj Close','Volume'])
@@ -207,7 +211,7 @@ def get_stock_diff(ticker):
 			last_close = cursor.fetchone()
 
 	dados = {}
-	perc = ((float(df_acao.iloc[:,3].values[0])/float(last_close))-1)*100
+	perc = ((float(df_acao.iloc[:,3].values[0])/float(last_close[0]))-1)*100
 	dados["percent"] = perc
 	dados["preco"] = str(df_acao.iloc[:,3].values[0])
 
