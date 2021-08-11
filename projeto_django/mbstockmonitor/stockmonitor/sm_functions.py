@@ -68,6 +68,7 @@ def get_intraday_acao(ticker):
 	if len(df_acao) == 0:
 		df_acao = yf.download('{}.SA'.format(ticker),start=last_day_bd_acao(ticker),interval='5m')
 	
+	df_acao = df_acao.dropna()
 	df_acao = df_acao.drop(columns=['Adj Close'])
 	dict_acao = df_acao.to_dict(orient='index')
 		        
@@ -150,6 +151,7 @@ def get_intraday_index(cod_index):
 
 	if len(df_index) == 0:
 		df_index = yf.download(cod_index_yf,start=last_day_bd_index(cod_index),interval='5m')
+	df_index = df_index.dropna()
 	df_index = df_index.drop(columns=['Adj Close','Volume'])
 	dict_index = df_index.to_dict(orient='index')
 	intraday = {}
@@ -224,7 +226,7 @@ def get_indicadores_stock(ticker):
 	indicadores = {}
 
 	with connection.cursor() as cursor:
-		cursor.execute("select emp_nome from empresa where emp_codigo = (select emp_codigo from acao where aco_codigo = %s", [ticker])
+		cursor.execute("select emp_nome from empresa where emp_codigo = (select emp_codigo from acao where aco_codigo = %s)", [ticker])
 		empresa = cursor.fetchone()[0]
 
 	indicadores["Nome"] = empresa
