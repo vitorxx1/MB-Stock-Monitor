@@ -144,14 +144,14 @@ function autocomplete(input, arr) {
 /**
  * First Chart start
  */
-function chartRenderOne(dados) {
+function chartRenderOne(dados, isIntraDay, cor) {
 
     if (chartOne) {
         chartOne.destroy();
     }
 
     var annot = {};
-    if (dados == arrChart.one.intraDay) {
+    if (isIntraDay) {
         annot = {
             yaxis: [
                 {
@@ -183,12 +183,16 @@ function chartRenderOne(dados) {
         },
     };
 
-    if ($("#acao_diff").hasClass('positive')) {
-        tema.monochrome.color = '#3CE610';
-    } else if ($("#acao_diff").hasClass('negative')) {
-        tema.monochrome.color = '#FF0000';
-    } else {
-        tema.monochrome.color = '#5F6E7A';
+    switch (cor) {
+        case 1:
+            tema.monochrome.color = '#3CE610';
+            break;
+        case 2:
+            tema.monochrome.color = '#FF0000';
+            break;
+        default:
+            tema.monochrome.color = '#5F6E7A';
+            break;
     }
 
     var options = {
@@ -378,8 +382,6 @@ function processHist(arr, chart) {
 
     var keys = Object.keys(arr);
 
-    ultimoDado.prevDay = arr[keys.at(-1)].Close;
-
     keys.forEach(e => {
         var aux = [];
         aux.push(new Date(e + ' 17:00:00').getTime() - 10800000);
@@ -387,6 +389,12 @@ function processHist(arr, chart) {
 
         arrChart[chart].dadosHistoricos.push(aux);
     });
+
+    if (!hasTodayClose(chart)) {
+        arrChart[chart].dadosHistoricos.push(arrChart[chart].intraDay.at(-1))
+    }
+
+    ultimoDado.prevDay = prevClose(chart);
 }
 
 /**
@@ -425,6 +433,9 @@ $('#submit').on('click', function () {
 
                 resetCssClasses(null);
                 document.getElementById('bt1').click();
+            },
+            error: function () {
+                console.log('vini');
             }
         });
     } else {
@@ -448,13 +459,14 @@ $('#submit2').on('click', function () {
             },
             dataType: "JSON",
             success: function (res) {
-                processIntraDay(res["Dados do dia"], 'two');
+                console.log(res);
+                // processIntraDay(res["Dados do dia"], 'two');
 
-                processHist(res["Dados Historicos"], 'two');
+                // processHist(res["Dados Historicos"], 'two');
 
-                processPropertiesIndex();
+                // processPropertiesIndex();
 
-                chartRenderTwo(arrChart['two'].intraDay)
+                // chartRenderTwo(arrChart['two'].intraDay)
 
                 input1.value = acoes[inputValue][0];
 
@@ -475,8 +487,8 @@ $('#submit2').on('click', function () {
 $('#bt1').on('click', function () {
     if (!($(this).hasClass('active'))) {
         resetCssClasses(document.getElementById('bt1'));
-        setDiff(prevClose('one'), 'one', 'último dia');
-        chartRenderOne(arrChart.one.intraDay);
+        var cor = setDiff(prevClose('one'), 'one', 'último dia');
+        chartRenderOne(arrChart.one.intraDay, 1, cor);
     }
 });
 
@@ -486,8 +498,8 @@ $('#bt2').on('click', function () {
             return fillterArr(e[0], 9);
         });
         resetCssClasses(document.getElementById('bt2'));
-        setDiff(newArr[0][1], 'one', 'última semana');
-        chartRenderOne(newArr);
+        var cor = setDiff(newArr[0][1], 'one', 'última semana');
+        chartRenderOne(newArr, 0, cor);
     }
 });
 
@@ -497,8 +509,8 @@ $('#bt3').on('click', function () {
             return fillterArr(e[0], 30);
         });
         resetCssClasses(document.getElementById('bt3'));
-        setDiff(newArr[0][1], 'one', 'último mês');
-        chartRenderOne(newArr);
+        var cor = setDiff(newArr[0][1], 'one', 'último mês');
+        chartRenderOne(newArr, 0, cor);
     }
 });
 
@@ -508,8 +520,8 @@ $('#bt4').on('click', function () {
             return fillterArr(e[0], 180);
         });
         resetCssClasses(document.getElementById('bt4'));
-        setDiff(newArr[0][1], 'one', 'último 6 meses');
-        chartRenderOne(newArr);
+        var cor = setDiff(newArr[0][1], 'one', 'último 6 meses');
+        chartRenderOne(newArr, 0, cor);
     }
 });
 
@@ -519,8 +531,8 @@ $('#bt5').on('click', function () {
             return fillterArr(e[0], 365);
         });
         resetCssClasses(document.getElementById('bt5'));
-        setDiff(newArr[0][1], 'one', 'último ano');
-        chartRenderOne(newArr);
+        var cor = setDiff(newArr[0][1], 'one', 'último ano');
+        chartRenderOne(newArr, 0, cor);
     }
 });
 
@@ -530,16 +542,16 @@ $('#bt6').on('click', function () {
             return fillterArr(e[0], 5 * 365);
         });
         resetCssClasses(document.getElementById('bt6'));
-        setDiff(newArr[0][1], 'one', 'últimos 5 anos');
-        chartRenderOne(newArr);
+        var cor = setDiff(newArr[0][1], 'one', 'últimos 5 anos');
+        chartRenderOne(newArr, 0, cor);
     }
 });
 
 $('#bt7').on('click', function () {
     if (!($(this).hasClass('active'))) {
         resetCssClasses(document.getElementById('bt7'));
-        setDiff(arrChart.one.dadosHistoricos[0][1], 'one', 'desde o começo');
-        chartRenderOne(arrChart.one.dadosHistoricos)
+        var cor = setDiff(arrChart.one.dadosHistoricos[0][1], 'one', 'desde o começo');
+        chartRenderOne(arrChart.one.dadosHistoricos, 0, cor);
     }
 });
 
@@ -580,7 +592,11 @@ $('#bt72').on('click', function () {
  * Funções auxiliares start
  */
 function prevClose(chart) {
-    return arrChart[chart].dadosHistoricos.at(-1)[1];
+    return arrChart[chart].dadosHistoricos.at(-2)[1];
+}
+
+function hasTodayClose(chart) {
+    return arrChart[chart].dadosHistoricos.at(-1)[0] == arrChart[chart].intraDay.at(-1)[0];
 }
 
 function setDiff(prev, chart, periodo) {
@@ -592,11 +608,14 @@ function setDiff(prev, chart, periodo) {
     porcento = formatString(porcento);
 
     if (aux > 0) {
-        $('#acao_diff').text('+' + porcento + '% ' + periodo).removeClass('negative').addClass('positive')
+        $('#acao_diff').text('+' + porcento + '% ' + periodo).removeClass('negative').addClass('positive');
+        return 1;
     } else if (aux < 0) {
-        $('#acao_diff').text(porcento + '% ' + periodo).removeClass('positive').addClass('negative')
+        $('#acao_diff').text(porcento + '% ' + periodo).removeClass('positive').addClass('negative');
+        return 2;
     } else {
         $('#acao_diff').text('0,00%').removeClass('positive').removeClass('negative');
+        return 0;
     }
 }
 
@@ -640,9 +659,7 @@ function processPropertiesAction() {
     $('#volume').text(vol);
     $('#prevClose').text(prevClose);
 
-    var lastClose = Number.parseFloat(ultimoDado.prevDay)
-    var actualClose = Number.parseFloat(ultimoDado.lastDay.Close)
-    var aux = 100 - ((lastClose / actualClose) * 100);
+    var actualClose = Number.parseFloat(ultimoDado.lastDay.Close);
 
     actualClose = Number.parseFloat(actualClose.toFixed(2));
     actualClose = Number.parseFloat(actualClose).toLocaleString("pt-BR");
