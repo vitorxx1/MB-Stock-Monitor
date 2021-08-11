@@ -218,6 +218,12 @@ def get_indicadores_stock(ticker):
 	df = yf.Ticker('{}.SA'.format(ticker))
 
 	indicadores = {}
+
+	with connection.cursor() as cursor:
+		cursor.execute("select emp_nome from empresa where emp_codigo = (select emp_codigo from acao where aco_codigo = %s", [ticker])
+		empresa = cursor.fetchone()[0]
+
+	indicadores["Nome"] = empresa
 	indicadores["LPA"] = str(round(df.info["trailingEps"],2))
 	indicadores["Alta 52"] = str(round(df.info["fiftyTwoWeekHigh"],2))
 	indicadores["Baixa 52"] = str(round(df.info["fiftyTwoWeekLow"],2))
