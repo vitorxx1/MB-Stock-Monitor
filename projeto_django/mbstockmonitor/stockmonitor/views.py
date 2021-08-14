@@ -22,10 +22,11 @@ def get_stock_data(request):
 	if last_day != yday:
 		atualiza_acao_banco(last_day + timedelta(1), ticker)
 
+	previsao = previsao_acao(ticker)
 	intraday = get_intraday_acao(ticker)
 	dados_historicos = get_dados_historicos_acao(ticker)
 
-	acao = {'Dados do dia': intraday,'Dados Historicos': dados_historicos}
+	acao = {'Previsao': previsao,'Dados do dia': intraday,'Dados Historicos': dados_historicos}
 
 	return HttpResponse(json.dumps(acao), content_type='application/json')
 
