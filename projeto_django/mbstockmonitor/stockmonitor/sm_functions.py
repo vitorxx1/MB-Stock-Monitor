@@ -176,9 +176,9 @@ def get_top_index_tock(cod_index):
 	stocks_list = []
 
 	for stock in stocks:
-		stocks_list.append(stock)
+		stocks_list.append(stock[0])
 
-	return stock_list
+	return stocks_list
 
 def get_stock_by_index():
 
