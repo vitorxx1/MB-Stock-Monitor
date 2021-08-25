@@ -1,4 +1,5 @@
 var arrInd, acoes;
+var intervalID = 0;
 var ultimoDado = { prevDay: 0, lastDay: {} };
 var arrChart = {
     one: {
@@ -499,7 +500,7 @@ function buttonEvents() {
         if (!($(this).hasClass('active'))) {
             var newArr = filterArray('one', 180);
             resetCssClasses(".buttons", $(this));
-            var cor = setDiff(newArr[0][1], actualClose("one"), 'último 6 meses',"#acao_diff");
+            var cor = setDiff(newArr[0][1], actualClose("one"), 'último 6 meses', "#acao_diff");
             chartRenderOne(newArr, 0, cor);
         }
     });
@@ -656,7 +657,7 @@ function buttonEvents() {
 
                     processPropertiesIndex();
 
-                    processIndexes(acoes[inputValue].slice(0,10));
+                    // processIndexes(acoes[inputValue].slice(0, 10));
 
                     // resetCssClasses(".buttons2", null);
 
@@ -666,6 +667,9 @@ function buttonEvents() {
 
                 },
                 complete: function () {
+                    continuousLoop(acoes[inputValue].slice(0, 10), 0);
+                    clearInterval(intervalID);
+                    intervalID = setInterval(continuousLoop, 60000, acoes[inputValue].slice(0, 10), 0);
                     // $input1.val(acoes[inputValue][0]);
                     // document.getElementById('submit').click();
                 }
@@ -768,8 +772,64 @@ function setTime(today) {
     $('#time').text(time);
 }
 
+/** Inicia a rolagem de texto */
+function startLoop() {
+    $("#grouploop-1").grouploop({
+        velocity: 0.5,
+        forward: false,
+        childNode: ".item",
+        childWrapper: ".item-wrap",
+        pauseOnHover: true
+    });
+}
+
+/** Faz as atualizações dos indexes */
+function continuousLoop(arr, i) {
+    if (!arr.length || i > 9) {
+        return false;
+    }
+    var $index = $("h4")[i];
+    if ($index.textContent != arr[0]) {
+        $index.textContent = arr[0];
+        $("h4")[i + 10].textContent = arr[0];
+    }
+    $.ajax({
+        type: "POST",
+        url: "stock_diff/",
+        data: {
+            ticker: arr[0]
+        },
+        dataType: "JSON",
+        success: function (res) {
+            var aux = formatPorcentagem(res.percent);
+            var $valor = $(".var").eq(i);
+            var $valor2 = $(".var").eq(i + 10);
+            if ($valor.text() != aux.str) {
+                $(".price")[i].textContent = "R$ " + formatNumber(res.preco);
+                $(".price")[i + 10].textContent = "R$ " + formatNumber(res.preco);
+                $valor.text(aux.str).removeClass('negative positive nulo');
+                $valor2.text(aux.str).removeClass('negative positive nulo');
+                if (aux.number > 0) {
+                    $valor.addClass('positive');
+                    $valor2.addClass('positive');
+                } else if (aux.number < 0) {
+                    $valor.addClass('negative');
+                    $valor2.addClass('negative');
+                } else {
+                    $valor.addClass('nulo');
+                    $valor2.addClass('nulo');
+                }
+                console.log("MUDANÇA DE VALORES EM " + arr[0]);
+            }
+        },
+        complete: function () {
+            continuousLoop(arr.slice(1), i + 1);
+        }
+    });
+}
+
+/** Primeira chamada para os indexes */
 function processIndexes(arr) {
-    console.log(arr);
     var arrPercent = [];
     var arrPreco = [];
     $(".item h4").each(function (index) {
@@ -789,23 +849,24 @@ function processIndexes(arr) {
             }
         });
     });
-    console.log(arrPercent);
-    console.log(arrPreco);
     $(".price").each(function (index) {
         $(this).text("R$ " + arrPreco[index]);
     });
     $(".var").each(function (index) {
         var $aux = $(this);
         var aux = arrPercent[index];
-        $aux.text(aux.str).removeClass('negative').removeClass('positive');
+        $aux.text(aux.str).removeClass('negative positive nulo');
         if (aux.number > 0) {
             $aux.addClass('positive');
         } else if (aux.number < 0) {
             $aux.addClass('negative');
+        } else {
+            $aux.addClass('nulo')
         }
     });
 }
 
+/** Inicia o site */
 function main() {
     $.ajax({
         type: "GET",
@@ -819,7 +880,7 @@ function main() {
             autocomplete(input2, arrInd);
             input2.value = arrInd[0];
             document.getElementById('submit2').click();
-            // setInterval(processIndexes, 60000);
+            startLoop();
         },
         error: main
     });

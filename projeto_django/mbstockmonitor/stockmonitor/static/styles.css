@@ -86,6 +86,10 @@ span.var {
     color: #0ea600;
 }
 
+.nulo {
+    color: #5F6E7A;
+}
+
 div#divContent {
     padding: 0px 15px;
     min-height: 500px;
