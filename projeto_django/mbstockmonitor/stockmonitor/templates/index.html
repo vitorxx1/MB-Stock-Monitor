@@ -16,17 +16,64 @@
         <header id="mainHeader">
             <h1>MB Stock Monitor</h1>
         </header> <!-- Main header -->
+        <div id="grouploop-1" class="promo-carousel">
+            <div class="item-wrap">
+                <div class="item">
+                    <h4></h4>
+                    <div><span class="price"></span><span class="var"></span></div>
+                </div>
+                <div class="item">
+                    <h4></h4>
+                    <div><span class="price"></span><span class="var"></span></div>
+                </div>
+                <div class="item">
+                    <h4></h4>
+                    <div><span class="price"></span><span class="var"></span></div>
+                </div>
+                <div class="item">
+                    <h4></h4>
+                    <div><span class="price"></span><span class="var"></span></div>
+                </div>
+                <div class="item">
+                    <h4></h4>
+                    <div><span class="price"></span><span class="var"></span></div>
+                </div>
+                <div class="item">
+                    <h4></h4>
+                    <div><span class="price"></span><span class="var"></span></div>
+                </div>
+                <div class="item">
+                    <h4></h4>
+                    <div><span class="price"></span><span class="var"></span></div>
+                </div>
+                <div class="item">
+                    <h4></h4>
+                    <div><span class="price"></span><span class="var"></span></div>
+                </div>
+                <div class="item">
+                    <h4></h4>
+                    <div><span class="price"></span><span class="var"></span></div>
+                </div>
+                <div class="item">
+                    <h4></h4>
+                    <div><span class="price"></span><span class="var"></span></div>
+                </div>
+            </div>
+        </div>
         <div id="divContent">
             <section id="content">
                 <header id="contentHeader">
                     <hgroup>
-                        <h1 id="actionName" class="cont1">Nome da ação</h1> 
+                        <div>
+                            <h1 id="actionName" class="cont1">Nome da ação</h1><span id="nome_da_empresa">vini</span>
+                        </div>
                         <h2 id="valorDaAcao"></h2><span id="acao_diff"></span>
                         <p id="time"></p>
                     </hgroup>
                     <div class="container">
                         <div class="autocomplete" id="autocomplete1">
-                            <input type="text" name="sigla" id="input-text" class="input-text cont1" placeholder="sigla">
+                            <input type="text" name="sigla" id="input-text" class="input-text cont1"
+                                placeholder="sigla">
                         </div>
                         <button id="submit" class="cont1 submitbts">OK</button>
                     </div>
@@ -46,15 +93,39 @@
                         <table>
                             <tr>
                                 <td class="labels">Open:</td>
-                                <td id="open"class="labelsValue"></td>
+                                <td id="open" class="labelsValue props1"></td>
                             </tr>
                             <tr>
                                 <td class="labels">High:</td>
-                                <td id="high" class="labelsValue"></td>
+                                <td id="high" class="labelsValue props1"></td>
                             </tr>
                             <tr>
                                 <td class="labels">Low:</td>
-                                <td id="low"class="labelsValue"></td>
+                                <td id="low" class="labelsValue props1"></td>
+                            </tr>
+                            <tr>
+                                <td class="labels">LPA:</td>
+                                <td id="lpa" class="labelsValue props1"></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="footerContent">
+                        <table>
+                            <tr>
+                                <td class="labels">Alta 52 semanas:</td>
+                                <td id="alta" class="labelsValue props1"></td>
+                            </tr>
+                            <tr>
+                                <td class="labels">Baixa 52 semanas:</td>
+                                <td id="baixa" class="labelsValue props1">1423.314</td>
+                            </tr>
+                            <tr>
+                                <td class="labels">Ult dividendo:</td>
+                                <td id="ult" class="labelsValue props1"></td>
+                            </tr>
+                            <tr>
+                                <td class="labels">Prox Dividendo:</td>
+                                <td id="prox" class="labelsValue props1"></td>
                             </tr>
                         </table>
                     </div>
@@ -62,15 +133,15 @@
                         <table>
                             <tr>
                                 <td class="labels">Close:</td>
-                                <td id="close" class="labelsValue"></td>
+                                <td id="close" class="labelsValue props1"></td>
                             </tr>
                             <tr>
                                 <td class="labels">Volume:</td>
-                                <td id="volume" class="labelsValue"></td>
+                                <td id="volume" class="labelsValue props1"></td>
                             </tr>
                             <tr>
                                 <td class="labels">Prev Close:</td>
-                                <td id="prevClose" class="labelsValue"></td>
+                                <td id="prevClose" class="labelsValue props1"></td>
                             </tr>
                         </table>
                     </div>
@@ -79,12 +150,13 @@
             <aside>
                 <header id="asideHeader">
                     <hgroup>
-                        <h1 id="indexName" class="cont2">Nome da ação</h1> 
+                        <h1 id="indexName" class="cont2">Nome da ação</h1>
                         <h2 id="valorDoIndice"></h2><span id="index_diff"></span>
                     </hgroup>
                     <div class="container" id="container2">
                         <div class="autocomplete" id="autocomplete2">
-                            <input type="text" name="sigla" id="input-text2" class="input-text cont2" placeholder="sigla">
+                            <input type="text" name="sigla" id="input-text2" class="input-text cont2"
+                                placeholder="sigla">
                         </div>
                         <button id="submit2" class="cont2 submitbts">OK</button>
                     </div>
@@ -104,15 +176,15 @@
                         <table>
                             <tr>
                                 <td class="labels">Open:</td>
-                                <td id="open2" class="labelsValue"></td>
+                                <td id="open2" class="labelsValue props2"></td>
                             </tr>
                             <tr>
                                 <td class="labels">High:</td>
-                                <td id="high2" class="labelsValue"></td>
+                                <td id="high2" class="labelsValue props2"></td>
                             </tr>
                             <tr>
                                 <td class="labels">Low:</td>
-                                <td id="low2" class="labelsValue"></td>
+                                <td id="low2" class="labelsValue props2"></td>
                             </tr>
                         </table>
                     </div>
@@ -120,63 +192,24 @@
                         <table>
                             <tr>
                                 <td class="labels">Close:</td>
-                                <td id="close2" class="labelsValue"></td>
+                                <td id="close2" class="labelsValue props2"></td>
                             </tr>
                             <tr>
                                 <td class="labels">Volume:</td>
-                                <td id="volume2" class="labelsValue"></td>
+                                <td id="volume2" class="labelsValue props2"></td>
                             </tr>
                             <tr>
                                 <td class="labels">Prev Close:</td>
-                                <td id="prevClose2"class="labelsValue"></td>
+                                <td id="prevClose2" class="labelsValue props2"></td>
                             </tr>
                         </table>
                     </div>
                 </footer>
             </aside> <!-- Second chart -->
         </div>
-        <section id="indexes">
-            <ul>
-                <li>
-                    <h4 class="indexName" id="nameOne">PETR4</h4>
-                    <div class="values">
-                        <span class="price"></span><span class="var"></span>
-                    </div>
-                </li>
-                <li>
-                    <h4 class="indexName" id="nameTwo">AZUL4</h4>
-                    <div class="values">
-                        <span class="price"></span><span class="var"></span>
-                    </div>
-                </li>
-                <li>
-                    <h4 class="indexName" id="nameThree">ABEV3</h4>
-                    <div class="values">
-                        <span class="price"></span><span class="var"></span>
-                    </div>
-                </li>
-                <li>
-                    <h4 class="indexName" id="nameFour">ELET3</h4>
-                    <div class="values">
-                        <span class="price"></span><span class="var"></span>
-                    </div>
-                </li>
-                <li>
-                    <h4 class="indexName" id="nameFour">CIEL3</h4>
-                    <div class="values">
-                        <span class="price"></span><span class="var"></span>
-                    </div>
-                </li>
-                <li id="last">
-                    <h4 class="indexName" id="nameFive">IGTA3</h4>
-                    <div class="values">
-                        <span class="price"></span><span class="var"></span>
-                    </div>
-                </li>
-            </ul>
-        </section> <!-- Indexes -->
     </div> <!-- Page -->
     <script src="{% static 'jQuery3.6.js' %}" type="text/javascript"></script>
+    <script type="text/javascript" src="{% static 'grouploop-1.0.3.min.js' %}"></script>
     <script src="{% static 'script.js' %}" type="text/javascript"></script>
 </body>
 

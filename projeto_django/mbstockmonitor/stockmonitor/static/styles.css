@@ -15,7 +15,7 @@ div.page {
     padding: inherit;
     border: thin solid red;
     font-family: 'Roboto', sans-serif;
-    width: 1100px;
+    width: 1200px;
 }
 
 #mainHeader {
@@ -33,44 +33,38 @@ div.page {
     letter-spacing: 0.1em;
 }
 
-#indexes {
-    border: thin solid red;
-    position: fixed;
-    bottom: 0;
-    z-index: 100;
-    background-color: white;
-    width: 1100px;
+.promo-carousel {
+    border-bottom: 1px solid #eee;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
 }
 
-ul {
+.promo-carousel .item-wrap {
+    margin: 0;
+    padding: 0;
+    width: 400%;
+    position: relative;
+    white-space: nowrap;
     display: flex;
-    justify-content: space-evenly;
-    padding: 0px;
-    margin: 0px;
 }
 
-li {
-    border-right: 1px solid #dadada;
-    padding: 0px 10px 2px;
-    list-style: none;
-    width: 16.66%;
+.promo-carousel .item {
+    margin: 0;
+    padding: 0;
+    background: #fff;
+    border-right: 1px solid #eee;
+    text-align: center;
+    min-width: 9%;
 }
 
-li#last {
-    border: none;
-}
-
-li h4 {
-    font-size: 14px;
+.promo-carousel h4{
+    text-transform: uppercase;
+    font-size: 15px;
     max-height: 17px;
     overflow: hidden;
-    margin: 5px 0px;
-    text-align: center;
-}
-
-li div {
-    display: flex;
-    justify-content: center;
+    margin: 0px;
+    padding: 5px;
 }
 
 span.price {
@@ -85,11 +79,11 @@ span.var {
 }
 
 .negative {
-    color: rgb(233, 35, 35);
+    color: red
 }
 
 .positive {
-    color: rgb(35, 204, 5);
+    color: #0ea600;
 }
 
 div#divContent {
@@ -118,6 +112,16 @@ hgroup {
     padding: 0;
     font-size: 14px;
     color: rgba(0,0,0,.62);
+}
+
+#nome_da_empresa{
+	color: #70757a;
+    font-size: 18px;
+}
+
+#actionName {
+    display: inline-block;
+    margin-right: 10px;
 }
 
 
@@ -220,8 +224,8 @@ button:active {
 
 div#one {
     border: thin solid red;
-    width: 600px;
-    height: 400px;
+    width: 700px;
+    height: 500px;
 }
 
 footer {
@@ -267,7 +271,7 @@ aside header {
 }
 
 div#two {
-    width: 400px;
+    width: 500px;
     height: 400px;
     border: thin solid rebeccapurple;
     background-repeat: no-repeat;
@@ -282,4 +286,10 @@ div.footerContent2 {
     font-size: 14px;
     padding: 0px 15px 10px;
     width: 49%;
+}
+
+@media (min-width: 768px) {
+    .promo-carousel .item-wrap {
+      width: 200%; 
+    } 
 }
