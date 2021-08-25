@@ -3,6 +3,7 @@ import json
 import yfinance as yf
 import os
 from datetime import date, timedelta
+from sklearn.linear_model import LinearRegression
 
 def dict_return(cursor):
     #Retorna uma de dicionários da consulta do cursor
@@ -53,10 +54,12 @@ def get_dados_historicos_acao(ticker):
 		query = dict_return(cursor)
 
 	dados_historicos = {}
-	for reg in query:
-		data = str(reg["cot_data"])
-		dados_historicos[data] = {}
-		dados_historicos[data]["Close"] = str(reg["cot_fechamento"])
+
+	if query != None:
+		for reg in query:
+			data = str(reg["cot_data"])
+			dados_historicos[data] = {}
+			dados_historicos[data]["Close"] = str(reg["cot_fechamento"])
 
 	return dados_historicos
 
@@ -237,3 +240,44 @@ def get_indicadores_stock(ticker):
 	indicadores["Prox Dividendo"] = str(round(df.info["dividendRate"],2))
 
 	return indicadores
+
+def previsao_acao(ticker):
+
+	today = date.today()
+	yday = date.today() - timedelta(1)
+	last_day = last_day_bd_acao(ticker)
+
+	if last_day != yday:
+		data = last_day - timedelta(15)
+	else:
+		data = today - timedelta(15)
+
+	with connection.cursor() as cursor:
+		cursor.execute("select cot_abertura, cot_max, cot_min, cot_fechamento from cotacao where aco_codigo = %s"+
+							"and cot_data > %s",[ticker,data])
+		cotacoes = cursor.fetchall()
+
+	previsores = []
+	classe = []
+	for cotacao in cotacoes:
+		cotacao = list(cotacao)
+		classe.append(cotacao.pop())
+		previsores.append(cotacao)
+
+	df_acao = yf.download('{}.SA'.format(ticker),start=today)
+	if len(df_acao) == 0 or df_acao.index.date[0] != date.today():
+		df_acao = yf.download('{}.SA'.format(ticker),start=last_day_bd_acao(ticker))
+		previsores.pop()
+		classe.pop()
+
+	alvo = df_acao.iloc[-1,0:3].values
+
+	linear_model = LinearRegression()
+	linear_model.fit(previsores, classe)
+
+	previsao = linear_model.predict(alvo.reshape(1,-1))[0]
+
+	return previsao
+
+
+
