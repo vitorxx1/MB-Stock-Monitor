@@ -42,8 +42,9 @@ def get_index_data(request):
 
 	dados_historicos = get_dados_historicos_index(cod_index)
 	intraday = get_intraday_index(cod_index)
+	top_stock = get_top_index_tock(cod_index)
 
-	index = {'Dados do dia': intraday,'Dados Historicos': dados_historicos}
+	index = {'Dados do dia': intraday,'Dados Historicos': dados_historicos, 'Top 10 Acoes': top_stock}
 
 	return HttpResponse(json.dumps(index), content_type='application/json')
 

@@ -167,6 +167,19 @@ def get_intraday_index(cod_index):
 
 	return intraday
 
+def get_top_index_tock(cod_index):
+
+	with connection.cursor() as cursor:
+		cursor.execute("select aco_codigo from listagem where ind_sigla = %s order by list_percentual desc limit 10",[cod_index])
+		stocks = cursor.fetchall()
+
+	stocks_list = []
+
+	for stock in stocks:
+		stocks_list.append(stock[0])
+
+	return stocks_list
+
 def get_stock_by_index():
 
 	with connection.cursor() as cursor:
