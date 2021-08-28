@@ -1,2 +1,1 @@
-- Muita demora para requisições de ações
-- stock_diff/ ainda esta errado
+- Erro na stock_indicadores

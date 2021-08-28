@@ -1,10 +1,20 @@
 var arrInd, acoes;
 var intervalID = 0;
-var ultimoDado = { prevDay: 0, lastDay: {} };
+var ultimoDado = {
+    prevDay: 0,
+    lastDay: {
+        Open: 0,
+        Close: 0,
+        High: 0,
+        Low: 0,
+        Volume: 0
+    }
+};
 var arrChart = {
     one: {
         intraDay: [],
-        dadosHistoricos: []
+        dadosHistoricos: [],
+        previsao: 0
     },
     two: {
         intraDay: [],
@@ -19,10 +29,76 @@ function chartRenderOne(dados, isIntraDay, cor) {
 
     if (chartOne) {
         chartOne.destroy();
+    }else{
+        document.getElementById("one").innerHTML = '';
     }
 
     var annot = {};
+    var maxValue = function (max) {
+        return max;
+    };
+    var minValue = function (min) {
+        return min;
+    }
+    var legendOptions = {
+        show: false,
+        showForSingleSeries: true,
+        showForNullSeries: true,
+        showForZeroSeries: true,
+        position: 'bottom',
+        horizontalAlign: 'center',
+        floating: false,
+        fontSize: '14px',
+        fontFamily: 'Helvetica, Arial',
+        fontWeight: 400,
+        formatter: function () {
+            return "Previsão de Fechamento: R$" + formatNumber(arrChart["one"].previsao);
+        },
+        inverseOrder: false,
+        width: 600,
+        height: 30,
+        offsetX: 0,
+        offsetY: 15,
+        labels: {
+            colors: undefined,
+            useSeriesColors: false
+        },
+        markers: {
+            width: 10,
+            height: 10,
+            strokeWidth: 0,
+            strokeColor: '#fff',
+            fillColors: ["rgb(0, 0, 0)"],
+            radius: 12,
+            customHTML: undefined,
+            onClick: undefined,
+            offsetX: 0,
+            offsetY: 0
+        },
+        itemMargin: {
+            horizontal: 0,
+            vertical: 0
+        },
+        onItemClick: {
+            toggleDataSeries: false
+        }
+    }
     if (isIntraDay) {
+        legendOptions.show = true;
+        maxValue = function (max) {
+            var prevClose = arrChart["one"].dadosHistoricos.at(-2)[1];
+            var previsao = arrChart["one"].previsao;
+            var x = previsao > prevClose ? previsao : prevClose;
+            x = max > x ? max : x;
+            return x + 0.1;
+        };
+        minValue = function (min) {
+            var prevClose = arrChart["one"].dadosHistoricos.at(-2)[1];
+            var previsao = arrChart["one"].previsao;
+            var x = previsao < prevClose ? previsao : prevClose;
+            x = min < x ? min : x;
+            return x - 0.1;
+        };
         annot = {
             yaxis: [
                 {
@@ -73,8 +149,8 @@ function chartRenderOne(dados, isIntraDay, cor) {
         chart: {
             id: 'area-datetime',
             type: 'area',
-            height: 500,
-            width: 600,
+            height: 410,
+            width: 635,
             zoom: {
                 autoScaleYaxis: true
             },
@@ -88,6 +164,10 @@ function chartRenderOne(dados, isIntraDay, cor) {
         markers: {
             size: 0,
             style: 'hollow',
+        },
+        yaxis: {
+            min: minValue,
+            max: maxValue
         },
         xaxis: {
             tooltip: {
@@ -120,6 +200,7 @@ function chartRenderOne(dados, isIntraDay, cor) {
                 stops: [0, 100]
             }
         },
+        legend: legendOptions
     }
 
     chartOne = new ApexCharts(document.getElementById('one'), options);
@@ -131,6 +212,8 @@ function chartRenderTwo(dados, cor) {
 
     if (chartTwo) {
         chartTwo.destroy();
+    }else{
+        document.getElementById("two").innerHTML = '';
     }
 
     var tema = {
@@ -163,8 +246,8 @@ function chartRenderTwo(dados, cor) {
         chart: {
             id: 'area-datetime',
             type: 'area',
-            height: 350,
-            width: 450,
+            height: 399,
+            width: 460,
             zoom: {
                 autoScaleYaxis: true
             },
@@ -340,10 +423,36 @@ function hasTodayClose(chart) {
     return dataHist.getDate() == dataIntra.getDate();
 }
 
+/** Verifica e retorna o último close */
+function previousClose(chart) {
+    if (arrChart[chart].dadosHistoricos.length) {
+        return arrChart[chart].dadosHistoricos.at(-2)[1];
+    } else if (arrChart[chart].intraDay.length) {
+        return arrChart[chart].intraDay[0][1];
+    } else {
+        return 0;
+    }
+}
+
+/** Edita a página para demonstrar ao usuário a falta de dados */
+function semDados(chart, str) {
+    document.getElementById(chart).innerHTML = str;
+}
+
 /** Processa os dados intraDay */
 function processIntraDay(arr, chart) {
 
     arrChart[chart].intraDay = [];
+    ultimoDado = {
+        prevDay: 0,
+        lastDay: {
+            Open: 0,
+            Close: 0,
+            High: 0,
+            Low: 0,
+            Volume: 0
+        }
+    }
 
     if (!Object.values(arr).length) {
         return false;
@@ -367,6 +476,8 @@ function processIntraDay(arr, chart) {
 
     ultimoDado.lastDay.Low = low;
     ultimoDado.lastDay.High = high;
+
+    return true;
 }
 
 /** Processa os dados históricos */
@@ -388,22 +499,26 @@ function processHist(arr, chart) {
         arrChart[chart].dadosHistoricos.push(aux);
     });
 
-    if (!hasTodayClose(chart)) {
-        arrChart[chart].dadosHistoricos.push(arrChart[chart].intraDay.at(-1));
-    } else {
-        arrChart[chart].intraDay.push(arrChart[chart].dadosHistoricos.at(-1));
-        ultimoDado.lastDay.Close = arrChart[chart].intraDay.at(-1)[1];
+    if (arrChart[chart].intraDay.length) {
+        if (!hasTodayClose(chart)) {
+            arrChart[chart].dadosHistoricos.push(arrChart[chart].intraDay.at(-1));
+        } else {
+            arrChart[chart].intraDay.push(arrChart[chart].dadosHistoricos.at(-1));
+            ultimoDado.lastDay.Close = arrChart[chart].intraDay.at(-1)[1];
 
-        if (ultimoDado.lastDay.Close > ultimoDado.lastDay.High) {
-            ultimoDado.lastDay.High = ultimoDado.lastDay.Close;
-        }
+            if (ultimoDado.lastDay.Close > ultimoDado.lastDay.High) {
+                ultimoDado.lastDay.High = ultimoDado.lastDay.Close;
+            }
 
-        if (ultimoDado.lastDay.Close < ultimoDado.lastDay.Low) {
-            ultimoDado.lastDay.Low = ultimoDado.lastDay.Close;
+            if (ultimoDado.lastDay.Close < ultimoDado.lastDay.Low) {
+                ultimoDado.lastDay.Low = ultimoDado.lastDay.Close;
+            }
         }
     }
 
     ultimoDado.prevDay = arrChart[chart].dadosHistoricos.at(-2)[1];
+
+    return true;
 }
 
 /**Função que adiciona todas os eventos dos botões */
@@ -417,8 +532,9 @@ function buttonEvents() {
         $('#low').text(formatNumber(ultimoDado.lastDay.Low));
         $('#close').text(close);
         $('#volume').text(formatNumber(ultimoDado.lastDay.Volume));
-        $('#prevClose').text(formatNumber(ultimoDado.prevDay));
+        $('#prevClose').text(formatNumber(previousClose("one")));
         $('#valorDaAcao').text('R$' + close + '  ');
+        $('#previsao').text(formatNumber(arrChart["one"].previsao))
     }
 
     /** Seta as propiedades do segundo gráfico(index) */
@@ -429,7 +545,7 @@ function buttonEvents() {
         $('#low2').text(formatNumber(ultimoDado.lastDay.Low));
         $('#close2').text(close);
         $('#volume2').text(formatNumber(ultimoDado.lastDay.Volume));
-        $('#prevClose2').text(formatNumber(ultimoDado.prevDay));
+        $('#prevClose2').text(formatNumber(previousClose("two")));
         $('#valorDoIndice').text('R$' + close + '  ');
     }
 
@@ -451,7 +567,7 @@ function buttonEvents() {
     function setDiff(prev, atual, periodo, id) {
         var diff = formatPorcentagem((atual / prev - 1) * 100);
         var _diff = $(id);
-        _diff.text(diff.str + periodo).removeClass("positive negative")
+        _diff.text(diff.str + ' ' + periodo).removeClass("positive negative nulo")
 
         if (diff.number > 0) {
             _diff.addClass("positive");
@@ -459,75 +575,118 @@ function buttonEvents() {
         } else if (diff.number < 0) {
             _diff.addClass("negative");
             return 2;
+        } else {
+            _diff.addClass("nulo");
+            return 0;
         }
-
-        return 0;
     }
 
     /** Valor atual do gráfico */
     function actualClose(chart) {
-        return arrChart[chart].intraDay.at(-1)[1];
+        if (arrChart[chart].intraDay.length) {
+            return arrChart[chart].intraDay.at(-1)[1];
+        } else if (arrChart[chart].dadosHistoricos.length) {
+            return arrChart[chart].dadosHistoricos.at(-1)[1];
+        } else {
+            return 0;
+        }
+    }
+
+    /** Mostra para o usuario que esta carregando */
+    function carregamento(chart, props, valor, diff) {
+        document.getElementById(chart).innerHTML = '<div class = "semDados">Carregando...</div>';
+        $(valor).text("R$ 0,00");
+        $(props).text('0,00');
+        $(diff).text(' ');
     }
 
     /** Eventos dos botões do primeiro gráfico */
     $('#bt1').on('click', function () {
         if (!($(this).hasClass('active'))) {
             resetCssClasses(".buttons", $(this));
-            var cor = setDiff(arrChart.one.dadosHistoricos.at(-2)[1], actualClose("one"), 'último dia', "#acao_diff");
-            chartRenderOne(arrChart.one.intraDay, 1, cor);
+            if (arrChart.one.intraDay.length) {
+                var cor = setDiff(previousClose("one"), actualClose("one"), 'último dia', "#acao_diff");
+                chartRenderOne(arrChart.one.intraDay, 1, cor);
+            } else {
+                semDados("one", '<div class = "semDados">Desculpe, dados indisponíveis!</div>');
+            }
         }
     });
 
     $('#bt2').on('click', function () {
         if (!($(this).hasClass('active'))) {
-            var newArr = filterArray('one', 9);
             resetCssClasses(".buttons", $(this));
-            var cor = setDiff(newArr[0][1], actualClose("one"), 'última semana', "#acao_diff");
-            chartRenderOne(newArr, 0, cor);
+            if (arrChart.one.dadosHistoricos.length) {
+                var newArr = filterArray('one', 9);
+                var cor = setDiff(newArr[0][1], actualClose("one"), 'última semana', "#acao_diff");
+                chartRenderOne(newArr, 0, cor);
+            } else {
+                semDados("one", '<div class = "semDados">Desculpe, dados indisponíveis!</div>');
+            }
         }
     });
 
     $('#bt3').on('click', function () {
         if (!($(this).hasClass('active'))) {
-            var newArr = filterArray('one', 30);
             resetCssClasses(".buttons", $(this));
-            var cor = setDiff(newArr[0][1], actualClose("one"), 'último mês', "#acao_diff");
-            chartRenderOne(newArr, 0, cor);
+            if (arrChart.one.dadosHistoricos.length) {
+                var newArr = filterArray('one', 30);
+                var cor = setDiff(newArr[0][1], actualClose("one"), 'último mês', "#acao_diff");
+                chartRenderOne(newArr, 0, cor);
+            } else {
+                semDados("one", '<div class = "semDados">Desculpe, dados indisponíveis!</div>');
+            }
         }
     });
 
     $('#bt4').on('click', function () {
         if (!($(this).hasClass('active'))) {
-            var newArr = filterArray('one', 180);
             resetCssClasses(".buttons", $(this));
-            var cor = setDiff(newArr[0][1], actualClose("one"), 'último 6 meses', "#acao_diff");
-            chartRenderOne(newArr, 0, cor);
+            if (arrChart.one.dadosHistoricos.length) {
+                var newArr = filterArray('one', 180);
+                var cor = setDiff(newArr[0][1], actualClose("one"), 'último 6 meses', "#acao_diff");
+                chartRenderOne(newArr, 0, cor);
+            } else {
+                semDados("one", '<div class = "semDados">Desculpe, dados indisponíveis!</div>');
+            }
         }
     });
 
     $('#bt5').on('click', function () {
         if (!($(this).hasClass('active'))) {
-            var newArr = filterArray('one', 365);
             resetCssClasses(".buttons", $(this));
-            var cor = setDiff(newArr[0][1], actualClose("one"), 'último ano', "#acao_diff");
-            chartRenderOne(newArr, 0, cor);
+            if (arrChart.one.dadosHistoricos.length) {
+                var newArr = filterArray('one', 365);
+                var cor = setDiff(newArr[0][1], actualClose("one"), 'último ano', "#acao_diff");
+                chartRenderOne(newArr, 0, cor);
+            } else {
+                semDados("one", '<div class = "semDados">Desculpe, dados indisponíveis!</div>');
+            }
         }
     });
 
     $('#bt6').on('click', function () {
         if (!($(this).hasClass('active'))) {
-            var newArr = filterArray('one', 5 * 365);
             resetCssClasses(".buttons", $(this));
-            var cor = setDiff(newArr[0][1], actualClose("one"), 'últimos 5 anos', "#acao_diff");
-            chartRenderOne(newArr, 0, cor);
+            if (arrChart.one.dadosHistoricos.length) {
+                var newArr = filterArray('one', 5 * 365);
+                var cor = setDiff(newArr[0][1], actualClose("one"), 'últimos 5 anos', "#acao_diff");
+                chartRenderOne(newArr, 0, cor);
+            } else {
+                semDados("one", '<div class = "semDados">Desculpe, dados indisponíveis!</div>');
+            }
         }
     });
 
     $('#bt7').on('click', function () {
         if (!($(this).hasClass('active'))) {
             resetCssClasses(".buttons", $(this));
-            var cor = setDiff(arrChart.one.dadosHistoricos[0][1], actualClose("one"), 'desde o começo', "#acao_diff");
-            chartRenderOne(arrChart.one.dadosHistoricos, 0, cor);
+            if (arrChart.one.dadosHistoricos.length) {
+                var cor = setDiff(arrChart.one.dadosHistoricos[0][1], actualClose("one"), 'desde o começo', "#acao_diff");
+                chartRenderOne(arrChart.one.dadosHistoricos, 0, cor);
+            } else {
+                semDados("one", '<div class = "semDados">Desculpe, dados indisponíveis!</div>');
+            }
         }
     });
 
@@ -536,74 +695,107 @@ function buttonEvents() {
     $('#bt12').on('click', function () {
         if (!($(this).hasClass('active'))) {
             resetCssClasses(".buttons2", $(this));
-            var cor = setDiff(arrChart.two.dadosHistoricos.at(-2)[1], actualClose("two"), 'último dia', "#index_diff");
-            chartRenderTwo(arrChart.two.intraDay, cor);
+            if (arrChart.two.intraDay.length) {
+                var cor = setDiff(previousClose("two"), actualClose("two"), 'último dia', "#index_diff");
+                chartRenderTwo(arrChart.two.intraDay, cor);
+            } else {
+                semDados("two", '<div class = "semDados">Desculpe, dados indisponíveis!</div>');
+            }
         }
     });
 
     $('#bt22').on('click', function () {
         if (!($(this).hasClass('active'))) {
-            var newArr = filterArray('two', 9);
             resetCssClasses(".buttons2", $(this));
-            var cor = setDiff(newArr[0][1], actualClose("two"), 'última semana', "#index_diff");
-            chartRenderTwo(newArr, cor);
+            if (arrChart.two.dadosHistoricos.length) {
+                var newArr = filterArray('two', 9);
+                var cor = setDiff(newArr[0][1], actualClose("two"), 'última semana', "#index_diff");
+                chartRenderTwo(newArr, cor);
+            } else {
+                semDados("two", '<div class = "semDados">Desculpe, dados indisponíveis!</div>');
+            }
         }
     });
 
     $('#bt32').on('click', function () {
         if (!($(this).hasClass('active'))) {
-            var newArr = filterArray('two', 30);
             resetCssClasses(".buttons2", $(this));
-            var cor = setDiff(newArr[0][1], actualClose("two"), 'último mês', "#index_diff");
-            chartRenderTwo(newArr, cor);
+            if (arrChart.two.dadosHistoricos.length) {
+                var newArr = filterArray('two', 30);
+                var cor = setDiff(newArr[0][1], actualClose("two"), 'último mês', "#index_diff");
+                chartRenderTwo(newArr, cor);
+            } else {
+                semDados("two", '<div class = "semDados">Desculpe, dados indisponíveis!</div>');
+            }
         }
     });
 
     $('#bt42').on('click', function () {
         if (!($(this).hasClass('active'))) {
-            var newArr = filterArray('two', 180);
             resetCssClasses(".buttons2", $(this));
-            var cor = setDiff(newArr[0][1], actualClose("two"), 'último 6 meses', "#index_diff");
-            chartRenderTwo(newArr, cor);
+            if (arrChart.two.dadosHistoricos.length) {
+                var newArr = filterArray('two', 180);
+                var cor = setDiff(newArr[0][1], actualClose("two"), 'último 6 meses', "#index_diff");
+                chartRenderTwo(newArr, cor);
+            } else {
+                semDados("two", '<div class = "semDados">Desculpe, dados indisponíveis!</div>');
+            }
         }
     });
 
     $('#bt52').on('click', function () {
         if (!($(this).hasClass('active'))) {
-            var newArr = filterArray('two', 365);
             resetCssClasses(".buttons2", $(this));
-            var cor = setDiff(newArr[0][1], actualClose("two"), 'último ano', "#index_diff");
-            chartRenderTwo(newArr, cor);
+            if (arrChart.two.dadosHistoricos.length) {
+                var newArr = filterArray('two', 365);
+                var cor = setDiff(newArr[0][1], actualClose("two"), 'último ano', "#index_diff");
+                chartRenderTwo(newArr, cor);
+            } else {
+                semDados("two", '<div class = "semDados">Desculpe, dados indisponíveis!</div>');
+            }
         }
     });
 
     $('#bt62').on('click', function () {
         if (!($(this).hasClass('active'))) {
-            var newArr = filterArray('two', 5 * 365);
             resetCssClasses(".buttons2", $(this));
-            var cor = setDiff(newArr[0][1], actualClose("two"), 'últimos 5 anos', "#index_diff");
-            chartRenderTwo(newArr, cor);
+            if (arrChart.two.dadosHistoricos.length) {
+                var newArr = filterArray('two', 5 * 365);
+                var cor = setDiff(newArr[0][1], actualClose("two"), 'últimos 5 anos', "#index_diff");
+                chartRenderTwo(newArr, cor);
+            } else {
+                semDados("two", '<div class = "semDados">Desculpe, dados indisponíveis!</div>');
+            }
         }
     });
 
     $('#bt72').on('click', function () {
         if (!($(this).hasClass('active'))) {
             resetCssClasses(".buttons2", $(this));
-            var cor = setDiff(arrChart.two.dadosHistoricos[0][1], actualClose("two"), 'desde o começo', "#index_diff");
-            chartRenderTwo(arrChart.one.dadosHistoricos, cor);
+            if (arrChart.two.dadosHistoricos.length) {
+                var cor = setDiff(arrChart.two.dadosHistoricos[0][1], actualClose("two"), 'desde o começo', "#index_diff");
+                chartRenderTwo(arrChart.one.dadosHistoricos, cor);
+            } else {
+                semDados("two", '<div class = "semDados">Desculpe, dados indisponíveis!</div>');
+            }
         }
     });
 
     /**Eventos dos botões de submit */
     var $indexName = $("#indexName");
     var $input1 = $("#input-text");
+    var $actionName = $("#actionName")
 
     $('#submit').on('click', function () {
         var inputValue = $input1.val();
         $('.error').remove();
         if (acoes[$indexName.text()].includes(inputValue)) {
-            $('#actionName').text(inputValue);
-            $(".props1").text("0,00");
+            var isDiff = false;
+            if ($actionName.text() != inputValue) {
+                $actionName.text(inputValue);
+                isDiff = true;
+                carregamento("one", ".props1", "#valorDaAcao", "#acao_diff");
+            }
             $.ajax({
                 type: "POST",
                 url: "stockmonitor/",
@@ -612,21 +804,51 @@ function buttonEvents() {
                 },
                 dataType: "JSON",
                 success: function (res) {
+                    var intra = processIntraDay(res["Dados do dia"], 'one');
 
-                    processIntraDay(res["Dados do dia"], 'one');
+                    var hist = processHist(res["Dados Historicos"], 'one');
 
-                    processHist(res["Dados Historicos"], 'one');
+                    if (intra) {
 
-                    systemTime = new Date(arrChart['one'].intraDay.at(-1)[0] + 10800000);
+                        arrChart["one"].previsao = res["Previsao"];
 
+                        systemTime = new Date(arrChart['one'].intraDay.at(-1)[0] + 10800000);
+
+                        setTime(systemTime);
+
+                    } else {
+                        arrChart["one"].previsao = 0;
+                        if (hist) {
+                            ultimoDado.lastDay.Close = actualClose('one');
+                            systemTime = new Date(arrChart.one.dadosHistoricos.at(-1)[0] + 10800000);
+                            setTime(systemTime);
+                        } else {
+                            $("#time").text("00:00");
+                        }
+                    }
+
+                    if (isDiff) {
+                        resetCssClasses(".buttons", null);
+                        document.getElementById('bt1').click();
+                    } else {
+                        var btActive = document.querySelector('.buttons.active');
+                        resetCssClasses(".buttons", null);
+                        if (btActive) {
+                            btActive.click();
+                        } else {
+                            document.getElementById('bt1').click();
+                        }
+                    }
                     processPropertiesAction();
-
-                    setTime(systemTime);
-
-                    resetCssClasses(".buttons", null);
-                    document.getElementById('bt1').click();
                 },
                 error: function () {
+                    processIntraDay(null, 'one');
+                    processHist(null, 'one');
+                    processPropertiesAction();
+                    semDados("one", '<div class = "semDados">Desculpe, algo deu errado.Tente novamente</div>');
+                },
+                complete: function () {
+
                 }
             });
         } else {
@@ -640,9 +862,11 @@ function buttonEvents() {
         var inputValue = $input2.val();
         $('.error').remove();
         if (arrInd.includes(inputValue)) {
-            $indexName.text(inputValue);
+            if ($indexName.text() != inputValue) {
+                $indexName.text(inputValue);
+                carregamento("two", ".props2", "#valorDoIndice", "#index_diff");
+            }
             autocomplete($input1[0], acoes[inputValue])
-            $(".props2").text("0,00");
             $.ajax({
                 type: "POST",
                 url: "index/",
@@ -651,27 +875,43 @@ function buttonEvents() {
                 },
                 dataType: "JSON",
                 success: function (res) {
-                    processIntraDay(res["Dados do dia"], 'two');
+                    var intra = processIntraDay(res["Dados do dia"], 'two');
 
-                    processHist(res["Dados Historicos"], 'two');
+                    var hist = processHist(res["Dados Historicos"], 'two');
+
+                    $(".props2").text("0,00");
+
+                    if (!intra && hist) {
+                        ultimoDado.lastDay.Close = actualClose('two');
+                    }
+
+                    resetCssClasses(".buttons2", null);
+
+                    document.getElementById('bt12').click();
 
                     processPropertiesIndex();
 
-                    // processIndexes(acoes[inputValue].slice(0, 10));
-
-                    // resetCssClasses(".buttons2", null);
-
-                    // document.getElementById('bt12').click();
+                    continuousLoop(res["Top 10 Acoes"], 0);
+                    if (!isDayClose()) {
+                        clearInterval(intervalID);
+                        intervalID = setInterval(continuousLoop, 60000, res["Top 10 Acoes"], 0);
+                    }
                 },
                 error: function () {
-
+                    processIntraDay(null, 'two');
+                    processHist(null, 'two');
+                    processPropertiesIndex();
+                    semDados("two", '<div class = "semDados">Desculpe, algo deu errado.Tente novamente</div>');
+                    continuousLoop(acoes[inputValue].slice(0, 10), 0);
+                    if (!isDayClose()) {
+                        clearInterval(intervalID);
+                        intervalID = setInterval(continuousLoop, 60000, acoes[inputValue].slice(0, 10), 0);
+                    }
                 },
                 complete: function () {
-                    continuousLoop(acoes[inputValue].slice(0, 10), 0);
-                    clearInterval(intervalID);
-                    intervalID = setInterval(continuousLoop, 60000, acoes[inputValue].slice(0, 10), 0);
-                    // $input1.val(acoes[inputValue][0]);
-                    // document.getElementById('submit').click();
+                    resetCssClasses(".buttons", null);
+                    $actionName.text(acoes[inputValue][0]);
+                    carregamento("one", ".props1", "#valorDaAcao", "#acao_diff");
                 }
             });
         } else {
@@ -693,16 +933,18 @@ function formatNumber(str) {
 
 /** Formata uma porcentagem para o padrão brasileiro com duas casas decimais */
 function formatPorcentagem(value) {
-
+    var aux = Number.parseFloat(value.toFixed(2));
     var str_formatted = {
         str: '',
-        number: value,
+        number: aux
     }
 
     str_formatted.str = formatNumber(value) + '%';
 
-    if (str_formatted.number >= 0) {
+    if (str_formatted.number > 0) {
         str_formatted.str = "+" + str_formatted.str;
+    } else if (!str_formatted.number) {
+        str_formatted.str = "0,00%";
     }
 
     return str_formatted;
@@ -758,6 +1000,12 @@ function monthOfTheYear(month) {
     }
 }
 
+/** Verifica se o mercado ja fechou */
+function isDayClose() {
+    var hours = new Date().getHours();
+    return (hours < 10) || (hours > 18) ? true : false;
+}
+
 /** Imprime o tempo do sistema em relação à ação em destaque */
 function setTime(today) {
 
@@ -786,6 +1034,8 @@ function startLoop() {
 /** Faz as atualizações dos indexes */
 function continuousLoop(arr, i) {
     if (!arr.length || i > 9) {
+        $("#input-text").val($('#actionName').text());
+        document.getElementById('submit').click();
         return false;
     }
     var $index = $("h4")[i];
@@ -819,49 +1069,16 @@ function continuousLoop(arr, i) {
                     $valor.addClass('nulo');
                     $valor2.addClass('nulo');
                 }
-                console.log("MUDANÇA DE VALORES EM " + arr[0]);
             }
+        },
+        error: function () { 
+            $(".price").eq(i).text("R$ 00,00");
+            $(".price").eq(i + 10).text("R$ 00,00");
+            $(".var").eq(i).text("0,00").removeClass('negative positive nulo');
+            $(".var").eq(i + 10).text("0,00").removeClass('negative positive nulo');
         },
         complete: function () {
             continuousLoop(arr.slice(1), i + 1);
-        }
-    });
-}
-
-/** Primeira chamada para os indexes */
-function processIndexes(arr) {
-    var arrPercent = [];
-    var arrPreco = [];
-    $(".item h4").each(function (index) {
-        var input = $(this).text(arr[index]).text();
-        $.ajax({
-            type: "POST",
-            async: false,
-            url: "stock_diff/",
-            data: {
-                ticker: input
-            },
-            dataType: "JSON",
-            success: function (res) {
-                arrPercent.push(formatPorcentagem(res.percent));
-                arrPreco.push(formatNumber(res.preco));
-
-            }
-        });
-    });
-    $(".price").each(function (index) {
-        $(this).text("R$ " + arrPreco[index]);
-    });
-    $(".var").each(function (index) {
-        var $aux = $(this);
-        var aux = arrPercent[index];
-        $aux.text(aux.str).removeClass('negative positive nulo');
-        if (aux.number > 0) {
-            $aux.addClass('positive');
-        } else if (aux.number < 0) {
-            $aux.addClass('negative');
-        } else {
-            $aux.addClass('nulo')
         }
     });
 }
@@ -888,6 +1105,19 @@ function main() {
 
 $(document).ready(function () {
     buttonEvents();
+    document.querySelector("div.item-wrap").addEventListener('click', (e) => {
+        var tgt = e.target;
+        var str = '';
+        if (tgt.nodeName == "H4") {
+            str = tgt.textContent;
+        } else if (tgt.nodeName == "SPAN") {
+            str = tgt.parentNode.previousElementSibling.textContent;
+        } else {
+            str = tgt.previousElementSibling.textContent;
+        }
+        $("#input-text").val(str);
+        document.getElementById('submit').click();
+    });
     main();
 });
 
