@@ -155,7 +155,7 @@ def get_intraday_index(cod_index):
 	if len(df_index) == 0:
 		df_index = yf.download(cod_index_yf,start=last_day_bd_index(cod_index),interval='5m')
 	df_index = df_index.dropna()
-	df_index = df_index.drop(columns=['Adj Close','Volume'])
+	df_index = df_index.drop(columns=['Adj Close'])
 	dict_index = df_index.to_dict(orient='index')
 	intraday = {}
 	for key in dict_index:
@@ -164,10 +164,11 @@ def get_intraday_index(cod_index):
 	    intraday[f"{key.date()} {key.time()}"]["High"] = str(round(dict_index[key]["High"],2))
 	    intraday[f"{key.date()} {key.time()}"]["Low"] = str(round(dict_index[key]["Low"],2))
 	    intraday[f"{key.date()} {key.time()}"]["Close"] = str(round(dict_index[key]["Close"],2))
+	    intraday[f"{key.date()} {key.time()}"]["Volume"] = str(dict_index[key]["Close"])
 
 	return intraday
 
-def get_top_index_tock(cod_index):
+def get_top_index_stock(cod_index):
 
 	with connection.cursor() as cursor:
 		cursor.execute("select aco_codigo from listagem where ind_sigla = %s order by list_percentual desc limit 10",[cod_index])
@@ -245,12 +246,21 @@ def get_indicadores_stock(ticker):
 		cursor.execute("select emp_nome from empresa where emp_codigo = (select emp_codigo from acao where aco_codigo = %s)", [ticker])
 		empresa = cursor.fetchone()[0]
 
+	indicadores_key_list = ["LPA","Alta 52","Baixa 52","Ult Dividend","Prox Dividendo"]
+	df_key_list = ["trailingEps","fiftyTwoWeekHigh","fiftyTwoWeekLow","lastDividendValue","dividendRate"]
+
+	none_list = []
+	for key in df.info.keys():
+	    if df.info[key] == None:
+	        none_list.append(key)
+
 	indicadores["Nome"] = empresa
-	indicadores["LPA"] = str(round(df.info["trailingEps"],2))
-	indicadores["Alta 52"] = str(round(df.info["fiftyTwoWeekHigh"],2))
-	indicadores["Baixa 52"] = str(round(df.info["fiftyTwoWeekLow"],2))
-	indicadores["Ult Dividendo"] = str(round(df.info["lastDividendValue"],2))
-	indicadores["Prox Dividendo"] = str(round(df.info["dividendRate"],2))
+
+	for i in range(len(indicadores_key_list)):
+		if df_key_list[i] in none_list:
+			indicadores[indicadores_key_list[i]] = "0"
+		else:
+			indicadores[indicadores_key_list[i]] = str(round(df.info[df_key_list[i]],2))
 
 	return indicadores
 
