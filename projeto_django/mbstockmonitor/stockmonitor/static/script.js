@@ -525,7 +525,8 @@ function processHist(arr, chart) {
 function buttonEvents() {
 
     /** Seta as propiedades do primeiro gráfico(ações) */
-    function processPropertiesAction() {
+    function processPropertiesAction(indicadores) {
+        console.log(indicadores);
         var close = formatNumber(ultimoDado.lastDay.Close);
         $('#open').text(formatNumber(ultimoDado.lastDay.Open));
         $('#high').text(formatNumber(ultimoDado.lastDay.High));
@@ -534,7 +535,22 @@ function buttonEvents() {
         $('#volume').text(formatNumber(ultimoDado.lastDay.Volume));
         $('#prevClose').text(formatNumber(previousClose("one")));
         $('#valorDaAcao').text('R$' + close + '  ');
-        $('#previsao').text(formatNumber(arrChart["one"].previsao))
+        $('#previsao').text(formatNumber(arrChart["one"].previsao));
+        if (indicadores) {
+            $("#lpa").text(formatNumber(indicadores["LPA"]));
+            $("#alta").text(formatNumber(indicadores["Alta 52"]));
+            $("#baixa").text(formatNumber(indicadores["Baixa 52"]));
+            $("#ult").text(formatNumber(indicadores["Ult Dividend"]));
+            $("#prox").text(formatNumber(indicadores["Prox Dividendo"]));
+            $("#nome_da_empresa").text(indicadores["Nome"]);
+        }else {
+            $("#lpa").text('0,00');
+            $("#alta").text('0,00');
+            $("#baixa").text('0,00');
+            $("#ult").text('0,00');
+            $("#prox").text('0,00');
+            $("#nome_da_empresa").text('');
+        }
     }
 
     /** Seta as propiedades do segundo gráfico(index) */
@@ -598,6 +614,9 @@ function buttonEvents() {
         $(valor).text("R$ 0,00");
         $(props).text('0,00');
         $(diff).text(' ');
+        if (chart == "one") {
+            $("#nome_da_empresa").text('');
+        }
     }
 
     /** Eventos dos botões do primeiro gráfico */
@@ -839,12 +858,13 @@ function buttonEvents() {
                             document.getElementById('bt1').click();
                         }
                     }
-                    processPropertiesAction();
+                    console.log(res["Indicadores"]);
+                    processPropertiesAction(res["Indicadores"]);
                 },
                 error: function () {
                     processIntraDay(null, 'one');
                     processHist(null, 'one');
-                    processPropertiesAction();
+                    processPropertiesAction(null);
                     semDados("one", '<div class = "semDados">Desculpe, algo deu errado.Tente novamente</div>');
                 },
                 complete: function () {
@@ -1002,8 +1022,10 @@ function monthOfTheYear(month) {
 
 /** Verifica se o mercado ja fechou */
 function isDayClose() {
-    var hours = new Date().getHours();
-    return (hours < 10) || (hours > 18) ? true : false;
+    var new_date = new Date();
+    var hours = new_date.getHours();
+    var day = new_date.getDay();
+    return (day == 0) || (day == 6) || (hours < 10) || (hours > 18) ? true : false;
 }
 
 /** Imprime o tempo do sistema em relação à ação em destaque */
