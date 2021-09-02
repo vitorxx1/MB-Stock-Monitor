@@ -526,7 +526,6 @@ function buttonEvents() {
 
     /** Seta as propiedades do primeiro gráfico(ações) */
     function processPropertiesAction(indicadores) {
-        console.log(indicadores);
         var close = formatNumber(ultimoDado.lastDay.Close);
         $('#open').text(formatNumber(ultimoDado.lastDay.Open));
         $('#high').text(formatNumber(ultimoDado.lastDay.High));
@@ -858,7 +857,6 @@ function buttonEvents() {
                             document.getElementById('bt1').click();
                         }
                     }
-                    console.log(res["Indicadores"]);
                     processPropertiesAction(res["Indicadores"]);
                 },
                 error: function () {
