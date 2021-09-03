@@ -164,7 +164,7 @@ def get_intraday_index(cod_index):
 	    intraday[f"{key.date()} {key.time()}"]["High"] = str(round(dict_index[key]["High"],2))
 	    intraday[f"{key.date()} {key.time()}"]["Low"] = str(round(dict_index[key]["Low"],2))
 	    intraday[f"{key.date()} {key.time()}"]["Close"] = str(round(dict_index[key]["Close"],2))
-	    intraday[f"{key.date()} {key.time()}"]["Volume"] = str(dict_index[key]["Close"])
+	    intraday[f"{key.date()} {key.time()}"]["Volume"] = str(dict_index[key]["Volume"])
 
 	return intraday
 
