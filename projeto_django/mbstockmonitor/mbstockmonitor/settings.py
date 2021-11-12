@@ -80,7 +80,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME':'mb_stock_monitor',
         'USER': 'root',
-        'PASSWORD': 'VitAum2tres4.',
+        'PASSWORD': '',
         'HOST': 'localhost',
         'PORT': '3306',
     }
